@@ -104,21 +104,44 @@ for responseindex in wholeresponse:
 			else:
 				pass
 
-		if mangaindex['startDate']['year'] is None:
+		if mangaindex['endDate']['year'] is None:
 			pass
 		else:
-			if mangaindex['startDate']['month'] is None:
+			if mangaindex['endDate']['month'] is None:
 				tempmonthEND = 6
 			else:
-				tempmonthEND = mangaindex['startDate']['month'] 
+				tempmonthEND = mangaindex['endDate']['month'] 
 
-			if mangaindex['startDate']['day'] is None:
+			if mangaindex['endDate']['day'] is None:
 				tempdayEND = 15
 			else:
-				tempdayEND = mangaindex['startDate']['day']
-			staginglist[-1]['end_date'] = datetime.datetime(mangaindex['startDate']['year'], tempmonth, tempday)
+				tempdayEND = mangaindex['endDate']['day']
+			staginglist[-1]['end_date'] = datetime.datetime(mangaindex['endDate']['year'], tempmonthEND, tempdayEND)
 
 
 df_whole = pd.DataFrame(staginglist)
 
-print(df_whole)
+df_whole['start_date_days'] = (df_whole['start_date'] - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
+df_whole['end_date_days'] = (df_whole['end_date'] - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
+
+nullsubset = ['scored_10_count', 'scored_20_count', 'scored_30_count', 'scored_40_count', 'scored_50_count', 'scored_60_count', 'scored_70_count', 'scored_80_count', 
+'scored_90_count', 'scored_100_count', 'status_CURRENT_count', 'status_PLANNING_count', 'status_COMPLETED_count', 'status_DROPPED_count', 'status_PAUSED_count', 'favorites', 
+'Comedy', 'Ecchi', 'Fantasy', 'Romance', 'country', 'Demons', 'Heterosexual', 'Ensemble Cast', 'Tsundere', 'Nudity', 'Female Protagonist', 'Magic', 'Primarily Female Cast', 
+'Elf', 'Shounen', 'Drama', 'Mystery', 'Supernatural', 'Shoujo', 'Afterlife', 'Reincarnation', 'Tragedy', 'Amnesia', 'Ghost', 'Suicide', 'Urban Fantasy', 'Love Triangle', 
+'end_date', 'Action', 'Adventure', 'Isekai', 'Female Harem', 'Horror', 'Psychological', 'Sci-Fi', 'Seinen', 'Primarily Child Cast', 'Denpa', 'Philosophy', 'Body Horror', 
+'Cosmic Horror', 'Bullying', 'Gore', 'Military', 'LGBTQ+ Themes', 'Transgender', 'Guns', 'Cars', 'Police', 'Crime', 'Mafia', 'Urban', 'Primarily Adult Cast', 'Gangs', 
+'Drugs', 'Age Gap', 'Memory Manipulation', 'Foreign', 'Bisexual', 'War', 'Politics', 'Swordplay', 'Historical', 'Full Color', 'Gender Bending', 'Tomboy', 'School', 
+'Crossdressing', 'Drawing', 'Martial Arts', 'Time Skip', 'Male Protagonist', 'Femboy', 'Male Harem', 'Mythology', 'Unrequited Love', 'Battle Royale', 'Espionage', 
+'Vampire', 'Witch', 'Super Power', 'Slice of Life', 'Family Life', 'Twins', 'Iyashikei', 'Gods', 'Dragons', 'Tanned Skin', 'Motorcycles', 'College', 'Alchemy', 'Robots', 
+'Kuudere', 'Band', 'Ninja', 'School Club', 'Aliens', 'Cult', 'Lost Civilization', 'Dystopian', 'Post-Apocalyptic', 'Detective', 'Conspiracy', 'Cyberpunk', 'Henshin', 
+'Tokusatsu', 'Coming of Age', 'Age Regression', 'Slapstick', 'Surreal Comedy', 'Yandere', 'Chibi', "Boys' Love", 'Office Lady', 'Work', 'Anti-Hero', 'Dungeon', 'Gambling', 
+'Skeleton', 'Assassins', 'Zombie', 'Found Family', '4-koma', 'Monster Girl', 'Primarily Teen Cast', 'Yuri', 'Fencing', 'Boarding School', 'Meta', 'Parody', 
+'Primarily Male Cast', 'Episodic', 'Josei', 'Video Games', 'Cannibalism', 'Survival', 'Slavery', 'Language Barrier', 'Travel', 'Cultivation', 'Wuxia', 'Samurai', 'Fugitive', 
+'Oiran', 'Sports', 'Basketball', 'Delinquents', 'Food', 'Youkai', 'Animals', 'Horticulture', 'Classic Literature', 'Death Game', 'Advertisement', 'Fashion', 'Ojou-sama', 
+'Villainess', 'Maids', 'Butler', 'Circus', 'Medicine', 'Rural', 'Educational', 'Marriage', 'Artificial Intelligence', 'Baseball', 'Football', 'Archery', 
+'Dissociative Identities', 'Adoption', 'Ero Guro', 'Trains', 'start_date_days']
+
+df_whole.loc[:, nullsubset] = df_whole.loc[:, nullsubset].fillna(0)
+df_whole.loc[:, 'country'] = df_whole.loc[:, 'country'].fillna('UNKNOWN')
+
+print(df_whole.country.unique())
