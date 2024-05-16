@@ -20,6 +20,34 @@ zeroed_df <- manga_raw %>%
   select(-c(id:start_date), -end_date, -end_date_days, -status_COMPLETED_count) %>%
   dummy_cols(., remove_selected_columns = T)
 
+## Building some new features from existing features
+## ============================================================================
+vars_computed_df
+
+## Checking for predictor variables which tend to look different between the
+## training set and test set, which will cause our model to overfit
+## ============================================================================
+set_for_time_dependence_checking <- zeroed_df %>% 
+  mutate(which_set = if_else(is.na(run_length), 
+                             "incomplete_manga", 
+                             "complete_manga"), which_set = factor(which_set)) %>%
+  select(-run_length)
+
+set.seed(1234)
+time_dependence_rf <- randomForest::randomForest(
+  set_for_time_dependence_checking[,!(colnames(set_for_time_dependence_checking) %in% c("which_set") )], 
+  set_for_time_dependence_checking[,"which_set"], 
+  strata = set_for_time_dependence_checking$which_set, 
+  sampsize = c(440, 440), 
+  importance = T)
+
+# The model does a good job predicting which set the observations are in
+time_dependence_rf
+
+# Getting variable importance list
+time_dependence_var_importance <- time_dependence_rf$importance %>% data.frame()
+
+
 ## Checking for highly correlated predictors (work in progress)
 ## ============================================================================
 Highly_Correlated <- zeroed_df %>%

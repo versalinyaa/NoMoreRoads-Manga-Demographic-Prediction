@@ -46,6 +46,22 @@ query ($page: Int) {
       	month
       	day
     	}
+      relations{
+        edges{
+          relationType
+          node{
+          	type
+          }
+        }
+      }
+      characters{
+        edges {
+          role
+          node{
+            gender
+          }
+        }
+      }
     }
   }
 }
@@ -165,10 +181,47 @@ for responseindex in wholeresponse:
 				tempdayEND = mangaindex['endDate']['day']
 			staginglist[-1]['end_date'] = datetime.datetime(
 				mangaindex['endDate']['year'], tempmonthEND, tempdayEND
-				)
+			)
+		for relationlisting in mangaindex['relations']['edges']:
+			if "relation_"+relationlisting['relationType'] in staginglist[-1]:
+				staginglist[-1]["relation_"+relationlisting['relationType']] += 1
+			else:
+				staginglist[-1]["relation_"+relationlisting['relationType']] = 1
+			if "relationmedia_"+relationlisting['node']['type'] in staginglist[-1]:
+				staginglist[-1]["relationmedia_"+relationlisting['node']['type']] += 1
+			else:
+				staginglist[-1]["relationmedia_"+relationlisting['node']['type']] = 1
+
+		for characterlisting in mangaindex['characters']['edges']:
+			print(characterlisting)
+			if characterlisting['role'] == "MAIN":
+				if 'Total_Main_Roles' in staginglist[-1]:
+					staginglist[-1]['Total_Main_Roles'] += 1
+				else:
+					staginglist[-1]['Total_Main_Roles'] = 1
+				if characterlisting['node']['gender'] == "Female":
+					if 'Female_Main_Roles' in staginglist[-1]:
+						staginglist[-1]['Female_Main_Roles'] += 1
+					else:
+						staginglist[-1]['Female_Main_Roles'] = 1
+			elif characterlisting['role'] == "SUPPORTING":
+				if 'Total_Supporting_Roles' in staginglist[-1]:
+					staginglist[-1]['Total_Supporting_Roles'] += 1
+				else:
+					staginglist[-1]['Total_Supporting_Roles'] = 1
+				if characterlisting['node']['gender'] == "Female":
+					if 'Female_Supporting_Roles' in staginglist[-1]:
+						staginglist[-1]['Female_Supporting_Roles'] += 1
+					else:
+						staginglist[-1]['Female_Supporting_Roles'] = 1
+			elif characterlisting['role'] == "BACKGROUND":
+				if 'Total_Background_Roles' in staginglist[-1]:
+					staginglist[-1]['Total_Background_Roles'] += 1
+				else:
+					staginglist[-1]['Total_Background_Roles'] = 1
 
 
-# # Converting list of dictionaries into pandas dataframe
+# Converting list of dictionaries into pandas dataframe
 
 df_whole = pd.DataFrame(staginglist)
 
