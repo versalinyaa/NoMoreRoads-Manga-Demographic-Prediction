@@ -1,1 +1,1 @@
-A script to predict the chapter length of unfinished manga based on data from the AniList API.
+A script to predict the magazine demographic of manga based on data from the AniList API.
