@@ -10,7 +10,7 @@ import pandas as pd
 query = '''
 query ($page: Int) {
   Page (page: $page, perPage: 50) {
-    media (type: MANGA, popularity_greater: 3000, isAdult: false) {
+    media (type: MANGA, popularity_greater: 200, isAdult: false) {
     	id
     	title{
     		english
@@ -141,10 +141,13 @@ for responseindex in wholeresponse:
 		else:
 			tempday = mangaindex['startDate']['day'] 
 
-		staginglist[-1]['start_date'] = datetime.datetime(
-			mangaindex['startDate']['year'], 
-			tempmonth, tempday
-			)
+		try:
+			staginglist[-1]['start_date'] = datetime.datetime(
+						mangaindex['startDate']['year'], 
+						tempmonth, tempday
+						)
+		except:
+			pass
 		for scorebucket in mangaindex['stats']['scoreDistribution']:
 			staginglist[-1][f"scored_{scorebucket['score']}_count"]\
 				= scorebucket['amount']
@@ -171,11 +174,11 @@ for responseindex in wholeresponse:
 			pass
 		else:
 			if mangaindex['endDate']['month'] is None:
-				tempmonthEND = 6
+				tempmonthEND = 5
 			else:
 				tempmonthEND = mangaindex['endDate']['month'] 
 
-			if mangaindex['endDate']['day'] is None:
+			if mangaindex['endDate']['day'] is None or mangaindex['endDate']['day'] > 31 or mangaindex['endDate']['day'] < 0:
 				tempdayEND = 15
 			else:
 				tempdayEND = mangaindex['endDate']['day']
@@ -231,6 +234,11 @@ df_whole['start_date_days'] = (df_whole['start_date']
  - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
 df_whole['end_date_days'] = (df_whole['end_date']
  - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
+
+## Replacing NAs in numeric columns with zeroes
+numeric_columns = df_whole.select_dtypes(include=['number']).columns
+
+
 
 print(df_whole)
 

@@ -2,7 +2,11 @@
 ## ============================================================================
 library(dplyr)
 library(tidyr)
-library(randomForest)
+library(ranger)
+#library(caret)
+library(smotefamily)
+library(purrr)
+#library(randomForest)
 
 # testing
 library(fastDummies)
@@ -50,13 +54,36 @@ Highly_Correlated <- zeroed_df %>%
 training_df <- zeroed_df %>% filter(demo != "None") %>% mutate(demo = factor(demo))
 testing_df <- zeroed_df %>% filter(demo == "None")
 
-## Establishing baseline random forest accuracy (60% of variance explained)
+## Establishing baseline random forest performance
 ## ============================================================================
-set.seed(1234)
-baseline_rf <- randomForest::randomForest(
-  training_df[,!(colnames(training_df) %in% c("demo") )], 
-  training_df[,"demo"],
-  strata = training_df$demo,
-  sampsize = c(80,80,80,80))
+wt_shounen <- nrow(training_df) / (4*sum(training_df$demo == "Shounen"))
+wt_shoujo <- nrow(training_df) / (4*sum(training_df$demo == "Shoujo"))
+wt_seinen <- nrow(training_df) / (4*sum(training_df$demo == "Seinen"))
+wt_josei <- (nrow(training_df) / (4*sum(training_df$demo == "Josei")) )
 
+caseweight <- case_when(training_df$demo == "Shounen" ~ wt_shounen,
+                        training_df$demo == "Shoujo" ~ wt_shoujo,
+                        training_df$demo == "Seinen" ~ wt_seinen,
+                        training_df$demo == "Josei" ~ wt_josei)
 
+baseline_rf <- ranger::ranger(formula = demo~., 
+                              data = training_df, 
+                              num.trees = 1300, 
+                              importance = "impurity", 
+                              case.weights = caseweight,
+                              class.weights = c(wt_josei, wt_seinen, wt_shoujo, wt_shounen),
+                              seed = 1234)
+
+## Attempting to deal with poor recall for the Josei class by using SMOTE
+## ===========================================================================
+
+validation_indices_vector <- sample(1:nrow(training_df), replace = F, size = nrow(training_df)*.2)
+
+training_df_2 <- training_df[-validation_indices_vector,]
+validation_df <- training_df[validation_indices_vector,]
+
+training_df_josei_only <- training_df_2 %>% filter(demo == "Josei")
+
+synthetic_josei_manga <- SMOTE( X = subset(training_df_josei_only, select = -c(demo)), 
+                                target = training_df_josei_only$demo,
+                                K = 1)
