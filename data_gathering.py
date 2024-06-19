@@ -12,6 +12,8 @@ query ($page: Int) {
   Page (page: $page, perPage: 50) {
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
     	id
+			chapters
+			volumes
     	title{
     		english
     		romaji
@@ -130,9 +132,11 @@ for responseindex in wholeresponse:
 		staginglist[-1]['eng_title'] = mangaindex['title']['english']
 		staginglist[-1]['rom_title'] = mangaindex['title']['romaji']
 		staginglist[-1]['status'] = mangaindex['status']
+		staginglist[-1]['chapters'] = mangaindex['chapters']
+		staginglist[-1]['volumes'] = mangaindex['volumes']
 
 		if mangaindex['startDate']['month'] is None:
-			tempmonth = 6
+			tempmonth = 5
 		else:
 			tempmonth = mangaindex['startDate']['month'] 
 
@@ -178,8 +182,8 @@ for responseindex in wholeresponse:
 			else:
 				tempmonthEND = mangaindex['endDate']['month'] 
 
-			if mangaindex['endDate']['day'] is None or mangaindex['endDate']['day'] > 31 or mangaindex['endDate']['day'] < 0:
-				tempdayEND = 15
+			if mangaindex['endDate']['day'] is None or mangaindex['endDate']['day'] > 28 or mangaindex['endDate']['day'] < 0:
+				tempdayEND = 28
 			else:
 				tempdayEND = mangaindex['endDate']['day']
 			staginglist[-1]['end_date'] = datetime.datetime(
