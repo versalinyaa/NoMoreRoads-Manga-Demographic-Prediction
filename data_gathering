@@ -131,8 +131,8 @@ for response in response_list:
     for mangaindex in rs_data['Page']['media']:
         entry = {}
         entry['id'] = mangaindex['id']
-        entry['eng_title'] = mangaindex['title']['english']
-        entry['rom_title'] = mangaindex['title']['romaji']
+        entry['eng_title'] = mangaindex['title']['english'].rstrip
+        entry['rom_title'] = mangaindex['title']['romaji'].rstrip
         entry['status'] = mangaindex['status']
         entry['chapters'] = mangaindex['chapters']
         entry['volumes'] = mangaindex['volumes']
