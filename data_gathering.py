@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2024 Zach Lesher <lesher.zachary@protonmail.com>
 # SPDX-License-Identifier: MIT
 
