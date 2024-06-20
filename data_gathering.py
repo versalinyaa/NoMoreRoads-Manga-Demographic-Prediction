@@ -3,13 +3,13 @@
 # Copyright 2024 Zach Lesher <lesher.zachary@protonmail.com>
 # SPDX-License-Identifier: MIT
 
-import requests
 import json
 import time
 import datetime
-import pandas as pd
 import logging
 import sys
+import requests
+import pandas as pd
 
 LOG_LEVEL = logging.DEBUG
 log = logging.getLogger(__name__)
