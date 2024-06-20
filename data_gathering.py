@@ -139,19 +139,19 @@ for response in response_list:
         entry['volumes'] = mangaindex['volumes']
 
         if mangaindex['startDate']['month'] is None:
-            tempmonth = 5
+            TEMP_MONTH = 5
         else:
-            tempmonth = mangaindex['startDate']['month']
+            TEMP_MONTH = mangaindex['startDate']['month']
 
         if mangaindex['startDate']['day'] is None:
-            tempday = 15
+            TEMP_DAY = 15
         else:
-            tempday = mangaindex['startDate']['day']
+            TEMP_DAY = mangaindex['startDate']['day']
 
         try:
             entry['start_date'] = datetime.datetime(
                         mangaindex['startDate']['year'],
-                        tempmonth, tempday
+                        TEMP_MONTH, TEMP_DAY
                         )
         except:
             pass
@@ -181,18 +181,18 @@ for response in response_list:
             pass
         else:
             if mangaindex['endDate']['month'] is None:
-                tempmonthEND = 5
+                TEMP_MONTH_END = 5
             else:
-                tempmonthEND = mangaindex['endDate']['month']
+                TEMP_MONTH_END = mangaindex['endDate']['month']
 
             if (mangaindex['endDate']['day'] is None
                 or mangaindex['endDate']['day'] > 28
                 or mangaindex['endDate']['day'] < 0):
-                tempdayEND = 28
+                TEMP_DAY_END = 28
             else:
-                tempdayEND = mangaindex['endDate']['day']
+                TEMP_DAY_END = mangaindex['endDate']['day']
             entry['end_date'] = datetime.datetime(
-                mangaindex['endDate']['year'], tempmonthEND, tempdayEND
+                mangaindex['endDate']['year'], TEMP_MONTH_END, TEMP_DAY_END
             )
         for relationlisting in mangaindex['relations']['edges']:
             if "relation_" + relationlisting['relationType'] in entry:
