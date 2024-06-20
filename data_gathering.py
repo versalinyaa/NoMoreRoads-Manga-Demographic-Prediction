@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stderr, encoding='utf-8', level=LOG_LEVEL)
 
 # Here we define our query as a multi-line string
-query = '''
+QUERY = '''
 query ($page: Int) {
   Page (page: $page, perPage: 50) {
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
@@ -89,7 +89,7 @@ response_list = []
 # records neccesary
 while True:
     # 1. Making and saving request
-    response = requests.post(url, json={'query': query, 'variables': {'page': len(response_list) + 1 }})
+    response = requests.post(url, json={'query': QUERY, 'variables': {'page': len(response_list) + 1 }})
 
     # 2. Checking if response has hit rate limit; if so wait & try again
     if response.status_code == 429:
