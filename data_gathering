@@ -14,10 +14,10 @@ import pandas as pd
 
 LOG_LEVEL = logging.DEBUG
 log = logging.getLogger(__name__)
-logging.basicConfig(stream=sys.stderr, encoding='utf-8', level=LOG_LEVEL)
+logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
 # Here we define our query as a multi-line string
-QUERY = '''
+QUERY = """
 query ($page: Int) {
   Page (page: $page, perPage: 50) {
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
@@ -77,10 +77,10 @@ query ($page: Int) {
     }
   }
 }
-'''
+"""
 
 # Defining URL for request
-URL = 'https://graphql.anilist.co'
+URL = "https://graphql.anilist.co"
 
 # Defining empty list to store the entire set of the
 # multiple requests we will make
@@ -90,12 +90,12 @@ response_list = []
 # records neccesary
 while True:
     # 1. Making and saving request
-    response = requests.post(URL, json={'query': QUERY,
-                                        'variables': {'page': len(response_list) + 1 }},
+    response = requests.post(URL, json={"query": QUERY,
+                                        "variables": {"page": len(response_list) + 1 }},
                                         timeout=15)
-    rs_retry_time = response.headers['Retry-After']
+    rs_retry_time = response.headers["Retry-After"]
     rs_status = response.status_code
-    rs_data = json.loads(response.text)['data']
+    rs_data = json.loads(response.text)["data"]
 
     # 2. Checking if response has hit rate limit; if so wait & try again
     if rs_status == 429:
@@ -114,7 +114,7 @@ while True:
     log.debug(rs_data is None)
 
     # 4. Checking if response got valid but blank response; ending loop if so
-    if rs_status == 200 and len(rs_data['Page']['media']) == 0:
+    if rs_status == 200 and len(rs_data["Page"]["media"]) == 0:
         break
 
     response_list.append(response)
@@ -128,108 +128,108 @@ staging_list = []
 
 # A series of loops to un-nest the json file in the format described above
 for response in response_list:
-    for mangaindex in rs_data['Page']['media']:
+    for mangaindex in rs_data["Page"]["media"]:
         entry = {}
-        entry['id'] = mangaindex['id']
-        entry['eng_title'] = mangaindex['title']['english'].rstrip
-        entry['rom_title'] = mangaindex['title']['romaji'].rstrip
-        entry['status'] = mangaindex['status']
-        entry['chapters'] = mangaindex['chapters']
-        entry['volumes'] = mangaindex['volumes']
+        entry["id"] = mangaindex["id"]
+        entry["eng_title"] = mangaindex["title"]["english"].rstrip
+        entry["rom_title"] = mangaindex["title"]["romaji"].rstrip
+        entry["status"] = mangaindex["status"]
+        entry["chapters"] = mangaindex["chapters"]
+        entry["volumes"] = mangaindex["volumes"]
 
-        if mangaindex['startDate']['month'] is None:
+        if mangaindex["startDate"]["month"] is None:
             TEMP_MONTH = 5
         else:
-            TEMP_MONTH = mangaindex['startDate']['month']
+            TEMP_MONTH = mangaindex["startDate"]["month"]
 
-        if mangaindex['startDate']['day'] is None:
+        if mangaindex["startDate"]["day"] is None:
             TEMP_DAY = 15
         else:
-            TEMP_DAY = mangaindex['startDate']['day']
+            TEMP_DAY = mangaindex["startDate"]["day"]
 
         try:
-            entry['start_date'] = datetime.datetime(
-                        mangaindex['startDate']['year'],
+            entry["start_date"] = datetime.datetime(
+                        mangaindex["startDate"]["year"],
                         TEMP_MONTH, TEMP_DAY
                         )
         except ValueError:
             pass
-        for scorebucket in mangaindex['stats']['scoreDistribution']:
-            entry[f"scored_{scorebucket['score']}_count"]\
-                = scorebucket['amount']
+        for scorebucket in mangaindex["stats"]["scoreDistribution"]:
+            entry[f"scored_{scorebucket["score"]}_count"]\
+                = scorebucket["amount"]
 
-        for statusguys in mangaindex['stats']['statusDistribution']:
-            entry[f"status_{statusguys['status']}_count"]\
-                = statusguys['amount']
+        for statusguys in mangaindex["stats"]["statusDistribution"]:
+            entry[f"status_{statusguys["status"]}_count"]\
+                = statusguys["amount"]
 
-        entry['favorites'] = mangaindex['favourites']
-        entry['source'] = mangaindex['source']
+        entry["favorites"] = mangaindex["favourites"]
+        entry["source"] = mangaindex["source"]
 
-        for genrelisting in mangaindex['genres']:
+        for genrelisting in mangaindex["genres"]:
             entry[genrelisting] = 1
 
-        entry['country'] = mangaindex['countryOfOrigin']
+        entry["country"] = mangaindex["countryOfOrigin"]
 
-        for taglisting in mangaindex['tags']:
-            if taglisting['isAdult'] is False:
-                entry[taglisting['name']] = taglisting['rank']
+        for taglisting in mangaindex["tags"]:
+            if taglisting["isAdult"] is False:
+                entry[taglisting["name"]] = taglisting["rank"]
             else:
                 pass
 
-        if mangaindex['endDate']['year'] is None:
+        if mangaindex["endDate"]["year"] is None:
             pass
         else:
-            if mangaindex['endDate']['month'] is None:
+            if mangaindex["endDate"]["month"] is None:
                 TEMP_MONTH_END = 5
             else:
-                TEMP_MONTH_END = mangaindex['endDate']['month']
+                TEMP_MONTH_END = mangaindex["endDate"]["month"]
 
-            if (mangaindex['endDate']['day'] is None
-                or mangaindex['endDate']['day'] > 28
-                or mangaindex['endDate']['day'] < 0):
+            if (mangaindex["endDate"]["day"] is None
+                or mangaindex["endDate"]["day"] > 28
+                or mangaindex["endDate"]["day"] < 0):
                 TEMP_DAY_END = 28
             else:
-                TEMP_DAY_END = mangaindex['endDate']['day']
-            entry['end_date'] = datetime.datetime(
-                mangaindex['endDate']['year'], TEMP_MONTH_END, TEMP_DAY_END
+                TEMP_DAY_END = mangaindex["endDate"]["day"]
+            entry["end_date"] = datetime.datetime(
+                mangaindex["endDate"]["year"], TEMP_MONTH_END, TEMP_DAY_END
             )
-        for relationlisting in mangaindex['relations']['edges']:
-            if "relation_" + relationlisting['relationType'] in entry:
-                entry["relation_" + relationlisting['relationType']] += 1
+        for relationlisting in mangaindex["relations"]["edges"]:
+            if "relation_" + relationlisting["relationType"] in entry:
+                entry["relation_" + relationlisting["relationType"]] += 1
             else:
-                entry["relation_" + relationlisting['relationType']] = 1
-            if "relationmedia_" + relationlisting['node']['type'] in entry:
-                entry["relationmedia_" + relationlisting['node']['type']] += 1
+                entry["relation_" + relationlisting["relationType"]] = 1
+            if "relationmedia_" + relationlisting["node"]["type"] in entry:
+                entry["relationmedia_" + relationlisting["node"]["type"]] += 1
             else:
-                entry["relationmedia_" + relationlisting['node']['type']] = 1
+                entry["relationmedia_" + relationlisting["node"]["type"]] = 1
 
-        for characterlisting in mangaindex['characters']['edges']:
+        for characterlisting in mangaindex["characters"]["edges"]:
             log.debug(characterlisting)
-            if characterlisting['role'] == "MAIN":
-                if 'Total_Main_Roles' in entry:
-                    entry['Total_Main_Roles'] += 1
+            if characterlisting["role"] == "MAIN":
+                if "Total_Main_Roles" in entry:
+                    entry["Total_Main_Roles"] += 1
                 else:
-                    entry['Total_Main_Roles'] = 1
-                if characterlisting['node']['gender'] == "Female":
-                    if 'Female_Main_Roles' in entry:
-                        entry['Female_Main_Roles'] += 1
+                    entry["Total_Main_Roles"] = 1
+                if characterlisting["node"]["gender"] == "Female":
+                    if "Female_Main_Roles" in entry:
+                        entry["Female_Main_Roles"] += 1
                     else:
-                        entry['Female_Main_Roles'] = 1
-            elif characterlisting['role'] == "SUPPORTING":
-                if 'Total_Supporting_Roles' in entry:
-                    entry['Total_Supporting_Roles'] += 1
+                        entry["Female_Main_Roles"] = 1
+            elif characterlisting["role"] == "SUPPORTING":
+                if "Total_Supporting_Roles" in entry:
+                    entry["Total_Supporting_Roles"] += 1
                 else:
-                    entry['Total_Supporting_Roles'] = 1
-                if characterlisting['node']['gender'] == "Female":
-                    if 'Female_Supporting_Roles' in entry:
-                        entry['Female_Supporting_Roles'] += 1
+                    entry["Total_Supporting_Roles"] = 1
+                if characterlisting["node"]["gender"] == "Female":
+                    if "Female_Supporting_Roles" in entry:
+                        entry["Female_Supporting_Roles"] += 1
                     else:
-                        entry['Female_Supporting_Roles'] = 1
-            elif characterlisting['role'] == "BACKGROUND":
-                if 'Total_Background_Roles' in entry:
-                    entry['Total_Background_Roles'] += 1
+                        entry["Female_Supporting_Roles"] = 1
+            elif characterlisting["role"] == "BACKGROUND":
+                if "Total_Background_Roles" in entry:
+                    entry["Total_Background_Roles"] += 1
                 else:
-                    entry['Total_Background_Roles'] = 1
+                    entry["Total_Background_Roles"] = 1
 
     staging_list.append(entry)
 
@@ -237,12 +237,12 @@ for response in response_list:
 df_whole = pd.DataFrame(staging_list)
 
 # Converting start and end dates into number of days since Jan 1, 1950
-df_whole['start_date_days'] = (df_whole['start_date']
+df_whole["start_date_days"] = (df_whole["start_date"]
     - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
-df_whole['end_date_days'] = (df_whole['end_date']
+df_whole["end_date_days"] = (df_whole["end_date"]
     - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
 
 ## Replacing NAs in numeric columns with zeroes
-numeric_columns = df_whole.select_dtypes(include=['number']).columns
+numeric_columns = df_whole.select_dtypes(include=["number"]).columns
 
-df_whole.to_csv('manga.csv', index=False)
+df_whole.to_csv("manga.csv", index=False)
