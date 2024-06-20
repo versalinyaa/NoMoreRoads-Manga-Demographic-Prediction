@@ -94,7 +94,7 @@ while True:
     # 2. Checking if response has hit rate limit; if so wait & try again
     if response.status_code == 429:
         log.debug("too many requests! waiting for a bit...")
-        log.debug(f"should wait for {response.headers['Retry-After']} seconds")
+        log.debug("should wait for %s seconds", response.headers['Retry-After'])
         time.sleep(int(response.headers['Retry-After']) + 1)
         continue
 
@@ -105,7 +105,7 @@ while True:
     # TODO: use me!
     rs_data = json.loads(response.text)['data']
 
-    log.debug(f"response_list.len: {len(response_list)}")
+    log.debug("response_list.len: %s", len(response_list))
     log.debug(response.status_code)
     log.debug(response.headers)
     log.debug(json.loads(response.text)['data'] is None)
