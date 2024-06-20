@@ -89,7 +89,7 @@ response_list = []
 # records neccesary
 while True:
     # 1. Making and saving request
-    response = requests.post(URL, json={'query': QUERY, 'variables': {'page': len(response_list) + 1 }})
+    response = requests.post(URL, json={'query': QUERY, 'variables': {'page': len(response_list) + 1 }}, timeout=15)
 
     # 2. Checking if response has hit rate limit; if so wait & try again
     if response.status_code == 429:
