@@ -152,7 +152,7 @@ for response in response_list:
                         mangaindex['startDate']['year'],
                         TEMP_MONTH, TEMP_DAY
                         )
-        except:
+        except ValueError:
             pass
         for scorebucket in mangaindex['stats']['scoreDistribution']:
             entry[f"scored_{scorebucket['score']}_count"]\
