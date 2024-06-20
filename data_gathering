@@ -171,7 +171,7 @@ for response in response_list:
         entry['country'] = mangaindex['countryOfOrigin']
 
         for taglisting in mangaindex['tags']:
-            if taglisting['isAdult'] == False:
+            if taglisting['isAdult'] is False:
                 entry[taglisting['name']] = taglisting['rank']
             else:
                 pass
