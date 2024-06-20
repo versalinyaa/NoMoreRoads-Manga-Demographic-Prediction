@@ -8,7 +8,10 @@ import json
 import time
 import datetime
 import pandas as pd
+import logging
 
+log = logging.getLogger(__name__)
+LOG_LEVEL = logging.WARNING
 
 # Here we define our query as a multi-line string
 query = '''
@@ -78,39 +81,42 @@ url = 'https://graphql.anilist.co'
 
 # Defining empty list to store the entire set of the
 # multiple requests we will make
-wholeresponse = []
+response_list = []
 
 # Looping through the number of pages needed to grab all of the manga
 # records neccesary
 while True:
     # 1. Making and saving request
-    wholeresponse.append(
-        requests.post(url, json={'query': query, 'variables': {'page': len(wholeresponse) + 1 }})
-    )
+    response = requests.post(url, json={'query': query, 'variables': {'page': len(response_list) + 1 }})
 
     # 2. Checking if response has hit rate limit; if so wait & try again
-    if wholeresponse[-1].status_code == 429:
-        print("too many requests! waiting for a bit...")
-        print(f"should wait for {wholeresponse[-1].headers['Retry-After']} seconds")
-        time.sleep(int(wholeresponse[-1].headers['Retry-After']) + 1)
-        del wholeresponse[-1]
+    if response.status_code == 429:
+        log.debug("too many requests! waiting for a bit...")
+        log.debug(f"should wait for {response.headers['Retry-After']} seconds")
+        time.sleep(int(response.headers['Retry-After']) + 1)
+        continue
 
-    if len(wholeresponse) > 0:
-        # 3. Checking if response is an unexpected code; if so stopping script altogether
-        if wholeresponse[-1].status_code not in [200, 429]:
-            sys.exit("got a weird response! Try running this script again.")
-        print(len(wholeresponse))
-        print(wholeresponse[-1].status_code)
-        print(wholeresponse[-1].headers)
-        print(json.loads(wholeresponse[-1].text)['data'] is None)
+    # 3. Checking if response is an unexpected code; if so stopping script altogether
+    if response.status_code not in [200, 429]:
+        sys.exit("got a weird response! Try running this script again.")
 
-        # 4. Checking if response got valid but blank response; ending loop if so
-        if wholeresponse[-1].status_code == 200 and len(json.loads(wholeresponse[-1].text)['data']['Page']['media']) == 0:
-            print("")
-            del wholeresponse[-1]
-            break
+    # TODO: use me!
+    rs_data = json.loads(response_list[-1].text)['data']
+
+    log.debug(f"response_list.len: {len(response_list)}")
+    log.debug(response.status_code)
+    log.debug(response.headers)
+    log.debug(json.loads(response.text)['data'] is None)
+
+    # 4. Checking if response got valid but blank response; ending loop if so
+    if response.status_code == 200 and len(json.loads(response.text)['data']['Page']['media']) == 0:
+        log.debug("")
+        break
+
+    response_list.append(response)
 
     # 5. Waiting to avoid triggering timeout, if possible
+    # TODO: Sleep a random time in range [0.5, 1.5]
     time.sleep(1.25)
 
 # Creating empty list to be filled with dictionaries, each one representing a
@@ -118,7 +124,7 @@ while True:
 staginglist = []
 
 # A series of loops to un-nest the json file in the format described above
-for responseindex in wholeresponse:
+for responseindex in response_list:
     for mangaindex in json.loads(responseindex.text)['data']['Page']['media']:
         staginglist.append({})
         staginglist[-1]['id'] = mangaindex['id']
@@ -193,7 +199,7 @@ for responseindex in wholeresponse:
                 staginglist[-1]["relationmedia_" + relationlisting['node']['type']] = 1
 
         for characterlisting in mangaindex['characters']['edges']:
-            print(characterlisting)
+            log.debug(characterlisting)
             if characterlisting['role'] == "MAIN":
                 if 'Total_Main_Roles' in staginglist[-1]:
                     staginglist[-1]['Total_Main_Roles'] += 1
@@ -231,7 +237,5 @@ df_whole['end_date_days'] = (df_whole['end_date']
 
 ## Replacing NAs in numeric columns with zeroes
 numeric_columns = df_whole.select_dtypes(include=['number']).columns
-
-print(df_whole)
 
 df_whole.to_csv('manga.csv', index=False)
