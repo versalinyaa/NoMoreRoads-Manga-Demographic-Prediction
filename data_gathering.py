@@ -123,18 +123,18 @@ while True:
 
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
-staginglist = []
+staging_list = []
 
 # A series of loops to un-nest the json file in the format described above
 for response in response_list:
     for mangaindex in json.loads(response.text)['data']['Page']['media']:
-        staginglist.append({})
-        staginglist[-1]['id'] = mangaindex['id']
-        staginglist[-1]['eng_title'] = mangaindex['title']['english']
-        staginglist[-1]['rom_title'] = mangaindex['title']['romaji']
-        staginglist[-1]['status'] = mangaindex['status']
-        staginglist[-1]['chapters'] = mangaindex['chapters']
-        staginglist[-1]['volumes'] = mangaindex['volumes']
+        entry = {}
+        entry['id'] = mangaindex['id']
+        entry['eng_title'] = mangaindex['title']['english']
+        entry['rom_title'] = mangaindex['title']['romaji']
+        entry['status'] = mangaindex['status']
+        entry['chapters'] = mangaindex['chapters']
+        entry['volumes'] = mangaindex['volumes']
 
         if mangaindex['startDate']['month'] is None:
             tempmonth = 5
@@ -147,31 +147,31 @@ for response in response_list:
             tempday = mangaindex['startDate']['day']
 
         try:
-            staginglist[-1]['start_date'] = datetime.datetime(
+            entry['start_date'] = datetime.datetime(
                         mangaindex['startDate']['year'],
                         tempmonth, tempday
                         )
         except:
             pass
         for scorebucket in mangaindex['stats']['scoreDistribution']:
-            staginglist[-1][f"scored_{scorebucket['score']}_count"]\
+            entry[f"scored_{scorebucket['score']}_count"]\
                 = scorebucket['amount']
 
         for statusguys in mangaindex['stats']['statusDistribution']:
-            staginglist[-1][f"status_{statusguys['status']}_count"]\
+            entry[f"status_{statusguys['status']}_count"]\
                 = statusguys['amount']
 
-        staginglist[-1]['favorites'] = mangaindex['favourites']
-        staginglist[-1]['source'] = mangaindex['source']
+        entry['favorites'] = mangaindex['favourites']
+        entry['source'] = mangaindex['source']
 
         for genrelisting in mangaindex['genres']:
-            staginglist[-1][genrelisting] = 1
+            entry[genrelisting] = 1
 
-        staginglist[-1]['country'] = mangaindex['countryOfOrigin']
+        entry['country'] = mangaindex['countryOfOrigin']
 
         for taglisting in mangaindex['tags']:
             if taglisting['isAdult'] == False:
-                staginglist[-1][taglisting['name']] = taglisting['rank']
+                entry[taglisting['name']] = taglisting['rank']
             else:
                 pass
 
@@ -187,49 +187,51 @@ for response in response_list:
                 tempdayEND = 28
             else:
                 tempdayEND = mangaindex['endDate']['day']
-            staginglist[-1]['end_date'] = datetime.datetime(
+            entry['end_date'] = datetime.datetime(
                 mangaindex['endDate']['year'], tempmonthEND, tempdayEND
             )
         for relationlisting in mangaindex['relations']['edges']:
-            if "relation_" + relationlisting['relationType'] in staginglist[-1]:
-                staginglist[-1]["relation_" + relationlisting['relationType']] += 1
+            if "relation_" + relationlisting['relationType'] in entry:
+                entry["relation_" + relationlisting['relationType']] += 1
             else:
-                staginglist[-1]["relation_" + relationlisting['relationType']] = 1
-            if "relationmedia_" + relationlisting['node']['type'] in staginglist[-1]:
-                staginglist[-1]["relationmedia_" + relationlisting['node']['type']] += 1
+                entry["relation_" + relationlisting['relationType']] = 1
+            if "relationmedia_" + relationlisting['node']['type'] in entry:
+                entry["relationmedia_" + relationlisting['node']['type']] += 1
             else:
-                staginglist[-1]["relationmedia_" + relationlisting['node']['type']] = 1
+                entry["relationmedia_" + relationlisting['node']['type']] = 1
 
         for characterlisting in mangaindex['characters']['edges']:
             log.debug(characterlisting)
             if characterlisting['role'] == "MAIN":
-                if 'Total_Main_Roles' in staginglist[-1]:
-                    staginglist[-1]['Total_Main_Roles'] += 1
+                if 'Total_Main_Roles' in entry:
+                    entry['Total_Main_Roles'] += 1
                 else:
-                    staginglist[-1]['Total_Main_Roles'] = 1
+                    entry['Total_Main_Roles'] = 1
                 if characterlisting['node']['gender'] == "Female":
-                    if 'Female_Main_Roles' in staginglist[-1]:
-                        staginglist[-1]['Female_Main_Roles'] += 1
+                    if 'Female_Main_Roles' in entry:
+                        entry['Female_Main_Roles'] += 1
                     else:
-                        staginglist[-1]['Female_Main_Roles'] = 1
+                        entry['Female_Main_Roles'] = 1
             elif characterlisting['role'] == "SUPPORTING":
-                if 'Total_Supporting_Roles' in staginglist[-1]:
-                    staginglist[-1]['Total_Supporting_Roles'] += 1
+                if 'Total_Supporting_Roles' in entry:
+                    entry['Total_Supporting_Roles'] += 1
                 else:
-                    staginglist[-1]['Total_Supporting_Roles'] = 1
+                    entry['Total_Supporting_Roles'] = 1
                 if characterlisting['node']['gender'] == "Female":
-                    if 'Female_Supporting_Roles' in staginglist[-1]:
-                        staginglist[-1]['Female_Supporting_Roles'] += 1
+                    if 'Female_Supporting_Roles' in entry:
+                        entry['Female_Supporting_Roles'] += 1
                     else:
-                        staginglist[-1]['Female_Supporting_Roles'] = 1
+                        entry['Female_Supporting_Roles'] = 1
             elif characterlisting['role'] == "BACKGROUND":
-                if 'Total_Background_Roles' in staginglist[-1]:
-                    staginglist[-1]['Total_Background_Roles'] += 1
+                if 'Total_Background_Roles' in entry:
+                    entry['Total_Background_Roles'] += 1
                 else:
-                    staginglist[-1]['Total_Background_Roles'] = 1
+                    entry['Total_Background_Roles'] = 1
+
+    staging_list.append(entry)
 
 # Converting list of dictionaries into pandas dataframe
-df_whole = pd.DataFrame(staginglist)
+df_whole = pd.DataFrame(staging_list)
 
 # Converting start and end dates into number of days since Jan 1, 1950
 df_whole['start_date_days'] = (df_whole['start_date']
