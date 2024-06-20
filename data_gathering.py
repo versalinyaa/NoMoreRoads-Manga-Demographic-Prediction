@@ -92,29 +92,28 @@ while True:
     response = requests.post(URL, json={'query': QUERY,
                                         'variables': {'page': len(response_list) + 1 }},
                                         timeout=15)
+    rs_retry_time = response.headers['Retry-After']
+    rs_status = response.status_code
+    rs_data = json.loads(response.text)['data']
 
     # 2. Checking if response has hit rate limit; if so wait & try again
-    if response.status_code == 429:
+    if rs_status == 429:
         log.debug("too many requests! waiting for a bit...")
-        log.debug("should wait for %s seconds", response.headers['Retry-After'])
-        time.sleep(int(response.headers['Retry-After']) + 1)
+        log.debug("should wait for %s seconds", rs_retry_time)
+        time.sleep(int(rs_retry_time) + 1)
         continue
 
     # 3. Checking if response is an unexpected code; if so stopping script altogether
-    if response.status_code not in [200, 429]:
+    if rs_status not in [200, 429]:
         sys.exit("got a weird response! Try running this script again.")
 
-    # TODO: use me!
-    rs_data = json.loads(response.text)['data']
-
     log.debug("response_list.len: %s", len(response_list))
-    log.debug(response.status_code)
+    log.debug(rs_status)
     log.debug(response.headers)
-    log.debug(json.loads(response.text)['data'] is None)
+    log.debug(rs_data is None)
 
     # 4. Checking if response got valid but blank response; ending loop if so
-    if response.status_code == 200 and len(json.loads(response.text)['data']['Page']['media']) == 0:
-        log.debug("")
+    if rs_status == 200 and len(rs_data['Page']['media']) == 0:
         break
 
     response_list.append(response)
