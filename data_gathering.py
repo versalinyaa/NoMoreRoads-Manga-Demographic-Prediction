@@ -89,7 +89,9 @@ response_list = []
 # records neccesary
 while True:
     # 1. Making and saving request
-    response = requests.post(URL, json={'query': QUERY, 'variables': {'page': len(response_list) + 1 }}, timeout=15)
+    response = requests.post(URL, json={'query': QUERY,
+                                        'variables': {'page': len(response_list) + 1 }},
+                                        timeout=15)
 
     # 2. Checking if response has hit rate limit; if so wait & try again
     if response.status_code == 429:
@@ -183,7 +185,9 @@ for response in response_list:
             else:
                 tempmonthEND = mangaindex['endDate']['month']
 
-            if mangaindex['endDate']['day'] is None or mangaindex['endDate']['day'] > 28 or mangaindex['endDate']['day'] < 0:
+            if (mangaindex['endDate']['day'] is None
+                or mangaindex['endDate']['day'] > 28
+                or mangaindex['endDate']['day'] < 0):
                 tempdayEND = 28
             else:
                 tempdayEND = mangaindex['endDate']['day']
