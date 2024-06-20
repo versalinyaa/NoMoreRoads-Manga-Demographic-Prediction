@@ -79,7 +79,7 @@ query ($page: Int) {
 '''
 
 # Defining URL for request
-url = 'https://graphql.anilist.co'
+URL = 'https://graphql.anilist.co'
 
 # Defining empty list to store the entire set of the
 # multiple requests we will make
@@ -89,7 +89,7 @@ response_list = []
 # records neccesary
 while True:
     # 1. Making and saving request
-    response = requests.post(url, json={'query': QUERY, 'variables': {'page': len(response_list) + 1 }})
+    response = requests.post(URL, json={'query': QUERY, 'variables': {'page': len(response_list) + 1 }})
 
     # 2. Checking if response has hit rate limit; if so wait & try again
     if response.status_code == 429:
