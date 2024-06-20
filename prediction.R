@@ -1,3 +1,6 @@
+# Copyright 2024 Zach Lesher <lesher.zachary@protonmail.com>
+# SPDX-License-Identifier: MIT
+
 ## Importing libraries
 ## ============================================================================
 library(dplyr)
