@@ -8,6 +8,7 @@ import time
 import datetime
 import logging
 import sys
+import random
 import requests
 import pandas as pd
 
@@ -119,8 +120,7 @@ while True:
     response_list.append(response)
 
     # 5. Waiting to avoid triggering timeout, if possible
-    # TODO: Sleep a random time in range [0.5, 1.5]
-    time.sleep(1.25)
+    time.sleep(random.uniform(0.5, 1.5))
 
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
