@@ -126,8 +126,8 @@ while True:
 staginglist = []
 
 # A series of loops to un-nest the json file in the format described above
-for responseindex in response_list:
-    for mangaindex in json.loads(responseindex.text)['data']['Page']['media']:
+for response in response_list:
+    for mangaindex in json.loads(response.text)['data']['Page']['media']:
         staginglist.append({})
         staginglist[-1]['id'] = mangaindex['id']
         staginglist[-1]['eng_title'] = mangaindex['title']['english']
