@@ -9,9 +9,11 @@ import time
 import datetime
 import pandas as pd
 import logging
+import sys
 
+LOG_LEVEL = logging.DEBUG
 log = logging.getLogger(__name__)
-LOG_LEVEL = logging.WARNING
+logging.basicConfig(stream=sys.stderr, encoding='utf-8', level=LOG_LEVEL)
 
 # Here we define our query as a multi-line string
 query = '''
@@ -101,7 +103,7 @@ while True:
         sys.exit("got a weird response! Try running this script again.")
 
     # TODO: use me!
-    rs_data = json.loads(response_list[-1].text)['data']
+    rs_data = json.loads(response.text)['data']
 
     log.debug(f"response_list.len: {len(response_list)}")
     log.debug(response.status_code)
