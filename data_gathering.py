@@ -85,7 +85,7 @@ wholeresponse = []
 while True:
     # 1. Making and saving request
     wholeresponse.append(
-        requests.post(url, json={'query': query, 'variables': {'page': len(wholeresponse)+1 }})
+        requests.post(url, json={'query': query, 'variables': {'page': len(wholeresponse) + 1 }})
     )
 
     # 2. Checking if response has hit rate limit; if so wait & try again
@@ -183,14 +183,14 @@ for responseindex in wholeresponse:
                 mangaindex['endDate']['year'], tempmonthEND, tempdayEND
             )
         for relationlisting in mangaindex['relations']['edges']:
-            if "relation_"+relationlisting['relationType'] in staginglist[-1]:
-                staginglist[-1]["relation_"+relationlisting['relationType']] += 1
+            if "relation_" + relationlisting['relationType'] in staginglist[-1]:
+                staginglist[-1]["relation_" + relationlisting['relationType']] += 1
             else:
-                staginglist[-1]["relation_"+relationlisting['relationType']] = 1
-            if "relationmedia_"+relationlisting['node']['type'] in staginglist[-1]:
-                staginglist[-1]["relationmedia_"+relationlisting['node']['type']] += 1
+                staginglist[-1]["relation_" + relationlisting['relationType']] = 1
+            if "relationmedia_" + relationlisting['node']['type'] in staginglist[-1]:
+                staginglist[-1]["relationmedia_" + relationlisting['node']['type']] += 1
             else:
-                staginglist[-1]["relationmedia_"+relationlisting['node']['type']] = 1
+                staginglist[-1]["relationmedia_" + relationlisting['node']['type']] = 1
 
         for characterlisting in mangaindex['characters']['edges']:
             print(characterlisting)
