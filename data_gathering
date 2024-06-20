@@ -128,104 +128,104 @@ staging_list = []
 
 # A series of loops to un-nest the json file in the format described above
 for response in response_list:
-    for mangaindex in rs_data["Page"]["media"]:
+    for manga_instance in rs_data["Page"]["media"]:
         entry = {}
-        entry["id"] = mangaindex["id"]
-        entry["eng_title"] = mangaindex["title"]["english"].rstrip
-        entry["rom_title"] = mangaindex["title"]["romaji"].rstrip
-        entry["status"] = mangaindex["status"]
-        entry["chapters"] = mangaindex["chapters"]
-        entry["volumes"] = mangaindex["volumes"]
+        entry["id"] = manga_instance["id"]
+        entry["eng_title"] = manga_instance["title"]["english"].rstrip
+        entry["rom_title"] = manga_instance["title"]["romaji"].rstrip
+        entry["status"] = manga_instance["status"]
+        entry["chapters"] = manga_instance["chapters"]
+        entry["volumes"] = manga_instance["volumes"]
 
-        if mangaindex["startDate"]["month"] is None:
+        if manga_instance["startDate"]["month"] is None:
             TEMP_MONTH = 5
         else:
-            TEMP_MONTH = mangaindex["startDate"]["month"]
+            TEMP_MONTH = manga_instance["startDate"]["month"]
 
-        if mangaindex["startDate"]["day"] is None:
+        if manga_instance["startDate"]["day"] is None:
             TEMP_DAY = 15
         else:
-            TEMP_DAY = mangaindex["startDate"]["day"]
+            TEMP_DAY = manga_instance["startDate"]["day"]
 
         try:
             entry["start_date"] = datetime.datetime(
-                        mangaindex["startDate"]["year"],
+                        manga_instance["startDate"]["year"],
                         TEMP_MONTH, TEMP_DAY
                         )
         except ValueError:
             pass
-        for scorebucket in mangaindex["stats"]["scoreDistribution"]:
+        for scorebucket in manga_instance["stats"]["scoreDistribution"]:
             entry[f"scored_{scorebucket["score"]}_count"]\
                 = scorebucket["amount"]
 
-        for statusguys in mangaindex["stats"]["statusDistribution"]:
+        for statusguys in manga_instance["stats"]["statusDistribution"]:
             entry[f"status_{statusguys["status"]}_count"]\
                 = statusguys["amount"]
 
-        entry["favorites"] = mangaindex["favourites"]
-        entry["source"] = mangaindex["source"]
+        entry["favorites"] = manga_instance["favourites"]
+        entry["source"] = manga_instance["source"]
 
-        for genrelisting in mangaindex["genres"]:
+        for genrelisting in manga_instance["genres"]:
             entry[genrelisting] = 1
 
-        entry["country"] = mangaindex["countryOfOrigin"]
+        entry["country"] = manga_instance["countryOfOrigin"]
 
-        for taglisting in mangaindex["tags"]:
+        for taglisting in manga_instance["tags"]:
             if taglisting["isAdult"] is False:
                 entry[taglisting["name"]] = taglisting["rank"]
             else:
                 pass
 
-        if mangaindex["endDate"]["year"] is None:
+        if manga_instance["endDate"]["year"] is None:
             pass
         else:
-            if mangaindex["endDate"]["month"] is None:
+            if manga_instance["endDate"]["month"] is None:
                 TEMP_MONTH_END = 5
             else:
-                TEMP_MONTH_END = mangaindex["endDate"]["month"]
+                TEMP_MONTH_END = manga_instance["endDate"]["month"]
 
-            if (mangaindex["endDate"]["day"] is None
-                or mangaindex["endDate"]["day"] > 28
-                or mangaindex["endDate"]["day"] < 0):
+            if (manga_instance["endDate"]["day"] is None
+                or manga_instance["endDate"]["day"] > 28
+                or manga_instance["endDate"]["day"] < 0):
                 TEMP_DAY_END = 28
             else:
-                TEMP_DAY_END = mangaindex["endDate"]["day"]
+                TEMP_DAY_END = manga_instance["endDate"]["day"]
             entry["end_date"] = datetime.datetime(
-                mangaindex["endDate"]["year"], TEMP_MONTH_END, TEMP_DAY_END
+                manga_instance["endDate"]["year"], TEMP_MONTH_END, TEMP_DAY_END
             )
-        for relationlisting in mangaindex["relations"]["edges"]:
-            if "relation_" + relationlisting["relationType"] in entry:
-                entry["relation_" + relationlisting["relationType"]] += 1
+        for relation_listing in manga_instance["relations"]["edges"]:
+            if "relation_" + relation_listing["relationType"] in entry:
+                entry["relation_" + relation_listing["relationType"]] += 1
             else:
-                entry["relation_" + relationlisting["relationType"]] = 1
-            if "relationmedia_" + relationlisting["node"]["type"] in entry:
-                entry["relationmedia_" + relationlisting["node"]["type"]] += 1
+                entry["relation_" + relation_listing["relationType"]] = 1
+            if "relationmedia_" + relation_listing["node"]["type"] in entry:
+                entry["relationmedia_" + relation_listing["node"]["type"]] += 1
             else:
-                entry["relationmedia_" + relationlisting["node"]["type"]] = 1
+                entry["relationmedia_" + relation_listing["node"]["type"]] = 1
 
-        for characterlisting in mangaindex["characters"]["edges"]:
-            log.debug(characterlisting)
-            if characterlisting["role"] == "MAIN":
+        for character_listing in manga_instance["characters"]["edges"]:
+            log.debug(character_listing)
+            if character_listing["role"] == "MAIN":
                 if "Total_Main_Roles" in entry:
                     entry["Total_Main_Roles"] += 1
                 else:
                     entry["Total_Main_Roles"] = 1
-                if characterlisting["node"]["gender"] == "Female":
+                if character_listing["node"]["gender"] == "Female":
                     if "Female_Main_Roles" in entry:
                         entry["Female_Main_Roles"] += 1
                     else:
                         entry["Female_Main_Roles"] = 1
-            elif characterlisting["role"] == "SUPPORTING":
+            elif character_listing["role"] == "SUPPORTING":
                 if "Total_Supporting_Roles" in entry:
                     entry["Total_Supporting_Roles"] += 1
                 else:
                     entry["Total_Supporting_Roles"] = 1
-                if characterlisting["node"]["gender"] == "Female":
+                if character_listing["node"]["gender"] == "Female":
                     if "Female_Supporting_Roles" in entry:
                         entry["Female_Supporting_Roles"] += 1
                     else:
                         entry["Female_Supporting_Roles"] = 1
-            elif characterlisting["role"] == "BACKGROUND":
+            elif character_listing["role"] == "BACKGROUND":
                 if "Total_Background_Roles" in entry:
                     entry["Total_Background_Roles"] += 1
                 else:
