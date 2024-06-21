@@ -34,7 +34,7 @@ query ($page: Int) {
             romaji
         }
         status
-            startDate {
+        startDate {
           year
           month
           day
@@ -148,7 +148,10 @@ for manga_instance in manga_list:
         "start_day": manga_instance["startDate"]["day"],
         "end_year": manga_instance["endDate"]["year"],
         "end_month": manga_instance["endDate"]["month"],
-        "end_day": manga_instance["endDate"]["day"]
+        "end_day": manga_instance["endDate"]["day"],
+        "favorites": manga_instance["favourites"],
+        "source": manga_instance["source"],
+        "country": manga_instance["countryOfOrigin"]
     }
 
     for scorebucket in manga_instance["stats"]["scoreDistribution"]:
@@ -159,13 +162,8 @@ for manga_instance in manga_list:
         entry[f"status_{statusguys['status']}_count"]\
             = statusguys["amount"]
 
-    entry["favorites"] = manga_instance["favourites"]
-    entry["source"] = manga_instance["source"]
-
     for genrelisting in manga_instance["genres"]:
         entry[genrelisting] = 1
-
-    entry["country"] = manga_instance["countryOfOrigin"]
 
     for taglisting in manga_instance["tags"]:
         if taglisting["isAdult"] is False:
