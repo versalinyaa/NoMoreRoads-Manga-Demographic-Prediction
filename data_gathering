@@ -132,6 +132,7 @@ while True:
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
 staging_list = []
+entry = {}
 
 # A series of loops to un-nest the json file in the format described above
 for response in response_list:
