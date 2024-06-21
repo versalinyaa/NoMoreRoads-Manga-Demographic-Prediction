@@ -9,7 +9,6 @@ The resulting JSON is then parsed into a pandas dataframe, with some transformat
 beforehand where it makes sense. The resulting pandas dataframe is then exported as a csv file.
 """
 
-import datetime
 import json
 import time
 import logging
@@ -137,31 +136,21 @@ entry = {}
 # A series of loops to un-nest the json file in the format described above
 for response in response_list:
     for manga_instance in rs_data["Page"]["media"]:
-        entry = {}
-        entry["id"] = manga_instance["id"]
-        entry["eng_title"] = manga_instance["title"]["english"].rstrip
-        entry["rom_title"] = manga_instance["title"]["romaji"].rstrip
-        entry["status"] = manga_instance["status"]
-        entry["chapters"] = manga_instance["chapters"]
-        entry["volumes"] = manga_instance["volumes"]
+        entry = {
+            "id": manga_instance["id"],
+            "eng_title": manga_instance["title"]["english"].rstrip,
+            "rom_title": manga_instance["title"]["romaji"].rstrip,
+            "status": manga_instance["status"],
+            "chapters": manga_instance["chapters"],
+            "volumes": manga_instance["volumes"],
+            "start_year": manga_instance["startDate"]["year"],
+            "start_month": manga_instance["startDate"]["month"],
+            "start_day": manga_instance["startDate"]["day"],
+            "end_year": manga_instance["endDate"]["year"],
+            "end_month": manga_instance["endDate"]["month"],
+            "end_day": manga_instance["endDate"]["day"]
+        }
 
-        if manga_instance["startDate"]["month"] is None:
-            TEMP_MONTH = 5
-        else:
-            TEMP_MONTH = manga_instance["startDate"]["month"]
-
-        if manga_instance["startDate"]["day"] is None:
-            TEMP_DAY = 15
-        else:
-            TEMP_DAY = manga_instance["startDate"]["day"]
-
-        try:
-            entry["start_date"] = datetime.datetime(
-                        manga_instance["startDate"]["year"],
-                        TEMP_MONTH, TEMP_DAY
-                        )
-        except ValueError:
-            pass
         for scorebucket in manga_instance["stats"]["scoreDistribution"]:
             entry[f"scored_{scorebucket['score']}_count"] \
                 = scorebucket["amount"]
@@ -184,23 +173,6 @@ for response in response_list:
             else:
                 pass
 
-        if manga_instance["endDate"]["year"] is None:
-            pass
-        else:
-            if manga_instance["endDate"]["month"] is None:
-                TEMP_MONTH_END = 5
-            else:
-                TEMP_MONTH_END = manga_instance["endDate"]["month"]
-
-            if (manga_instance["endDate"]["day"] is None
-                or manga_instance["endDate"]["day"] > 28
-                or manga_instance["endDate"]["day"] < 0):
-                TEMP_DAY_END = 28
-            else:
-                TEMP_DAY_END = manga_instance["endDate"]["day"]
-            entry["end_date"] = datetime.datetime(
-                manga_instance["endDate"]["year"], TEMP_MONTH_END, TEMP_DAY_END
-            )
         for relation_listing in manga_instance["relations"]["edges"]:
             if "relation_" + relation_listing["relationType"] in entry:
                 entry["relation_" + relation_listing["relationType"]] += 1
