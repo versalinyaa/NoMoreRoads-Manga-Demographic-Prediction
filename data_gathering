@@ -3,9 +3,9 @@
 # Copyright 2024 Zach Lesher <lesher.zachary@protonmail.com>
 # SPDX-License-Identifier: MIT
 
+import datetime
 import json
 import time
-import datetime
 import logging
 import sys
 import random
@@ -155,11 +155,11 @@ for response in response_list:
         except ValueError:
             pass
         for scorebucket in manga_instance["stats"]["scoreDistribution"]:
-            entry[f"scored_{scorebucket["score"]}_count"]\
+            entry[f"scored_{scorebucket['score']}_count"] \
                 = scorebucket["amount"]
 
         for statusguys in manga_instance["stats"]["statusDistribution"]:
-            entry[f"status_{statusguys["status"]}_count"]\
+            entry[f"status_{statusguys['status']}_count"]\
                 = statusguys["amount"]
 
         entry["favorites"] = manga_instance["favourites"]
@@ -235,14 +235,5 @@ for response in response_list:
 
 # Converting list of dictionaries into pandas dataframe
 df_whole = pd.DataFrame(staging_list)
-
-# Converting start and end dates into number of days since Jan 1, 1950
-df_whole["start_date_days"] = (df_whole["start_date"]
-    - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
-df_whole["end_date_days"] = (df_whole["end_date"]
-    - datetime.datetime(1950, 1, 1)).transform(lambda x: x.days)
-
-## Replacing NAs in numeric columns with zeroes
-numeric_columns = df_whole.select_dtypes(include=["number"]).columns
 
 df_whole.to_csv("manga.csv", index=False)
