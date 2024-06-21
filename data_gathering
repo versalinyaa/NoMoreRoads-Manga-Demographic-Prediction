@@ -99,13 +99,14 @@ while True:
     response = requests.post(URL, json={"query": QUERY,
                                         "variables": {"page": len(response_list) + 1 }},
                                         timeout=15)
-    rs_retry_time = response.headers["Retry-After"]
+    log.debug(response.headers)
     rs_status = response.status_code
     rs_data = json.loads(response.text)["data"]
 
     # 2. Checking if response has hit rate limit; if so wait & try again
     if rs_status == 429:
         log.debug("too many requests! waiting for a bit...")
+        rs_retry_time = response.headers["Retry-After"]
         log.debug("should wait for %s seconds", rs_retry_time)
         time.sleep(int(rs_retry_time) + 1)
         continue
