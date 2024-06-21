@@ -3,6 +3,12 @@
 # Copyright 2024 Zach Lesher <lesher.zachary@protonmail.com>
 # SPDX-License-Identifier: MIT
 
+"""
+This script queries the Anilist API and saves every manga listing that fits within set parameters.
+The resulting JSON is then parsed into a pandas dataframe, with some transformations done 
+beforehand where it makes sense. The resulting pandas dataframe is then exported as a csv file.
+"""
+
 import datetime
 import json
 import time
