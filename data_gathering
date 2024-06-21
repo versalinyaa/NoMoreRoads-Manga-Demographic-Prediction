@@ -89,14 +89,14 @@ URL = "https://graphql.anilist.co"
 
 # Defining empty list to store the entire set of the
 # multiple requests we will make
-response_list = []
+manga_list = []
 
 # Looping through the number of pages needed to grab all of the manga
 # records neccesary
 while True:
     # 1. Making and saving request
     response = requests.post(URL, json={"query": QUERY,
-                                        "variables": {"page": len(response_list) + 1 }},
+                                        "variables": {"page": len(manga_list) + 1 }},
                                         timeout=15)
     log.debug(response.headers)
     rs_status = response.status_code
@@ -114,7 +114,7 @@ while True:
     if rs_status not in [200, 429]:
         sys.exit("got a weird response! Try running this script again.")
 
-    log.debug("response_list.len: %s", len(response_list))
+    log.debug("response_list.len: %s", len(manga_list))
     log.debug(rs_status)
     log.debug(response.headers)
     log.debug(rs_data is None)
@@ -122,8 +122,9 @@ while True:
     # 4. Checking if response got valid but blank response; ending loop if so
     if rs_status == 200 and len(rs_data["Page"]["media"]) == 0:
         break
-
-    response_list.append(response)
+    
+    # 5. Appending relevant information to 
+    manga_list += rs_data["Page"]["media"]
 
     # 5. Waiting to avoid triggering timeout, if possible
     time.sleep(random.uniform(0.5, 1.5))
@@ -134,82 +135,81 @@ staging_list = []
 entry = {}
 
 # A series of loops to un-nest the json file in the format described above
-for response in response_list:
-    for manga_instance in rs_data["Page"]["media"]:
-        entry = {
-            "id": manga_instance["id"],
-            "eng_title": manga_instance["title"]["english"].rstrip,
-            "rom_title": manga_instance["title"]["romaji"].rstrip,
-            "status": manga_instance["status"],
-            "chapters": manga_instance["chapters"],
-            "volumes": manga_instance["volumes"],
-            "start_year": manga_instance["startDate"]["year"],
-            "start_month": manga_instance["startDate"]["month"],
-            "start_day": manga_instance["startDate"]["day"],
-            "end_year": manga_instance["endDate"]["year"],
-            "end_month": manga_instance["endDate"]["month"],
-            "end_day": manga_instance["endDate"]["day"]
-        }
+for manga_instance in manga_list:
+    entry = {
+        "id": manga_instance["id"],
+        "eng_title": manga_instance["title"]["english"].rstrip,
+        "rom_title": manga_instance["title"]["romaji"].rstrip,
+        "status": manga_instance["status"],
+        "chapters": manga_instance["chapters"],
+        "volumes": manga_instance["volumes"],
+        "start_year": manga_instance["startDate"]["year"],
+        "start_month": manga_instance["startDate"]["month"],
+        "start_day": manga_instance["startDate"]["day"],
+        "end_year": manga_instance["endDate"]["year"],
+        "end_month": manga_instance["endDate"]["month"],
+        "end_day": manga_instance["endDate"]["day"]
+    }
 
-        for scorebucket in manga_instance["stats"]["scoreDistribution"]:
-            entry[f"scored_{scorebucket['score']}_count"] \
-                = scorebucket["amount"]
+    for scorebucket in manga_instance["stats"]["scoreDistribution"]:
+        entry[f"scored_{scorebucket['score']}_count"] \
+            = scorebucket["amount"]
 
-        for statusguys in manga_instance["stats"]["statusDistribution"]:
-            entry[f"status_{statusguys['status']}_count"]\
-                = statusguys["amount"]
+    for statusguys in manga_instance["stats"]["statusDistribution"]:
+        entry[f"status_{statusguys['status']}_count"]\
+            = statusguys["amount"]
 
-        entry["favorites"] = manga_instance["favourites"]
-        entry["source"] = manga_instance["source"]
+    entry["favorites"] = manga_instance["favourites"]
+    entry["source"] = manga_instance["source"]
 
-        for genrelisting in manga_instance["genres"]:
-            entry[genrelisting] = 1
+    for genrelisting in manga_instance["genres"]:
+        entry[genrelisting] = 1
 
-        entry["country"] = manga_instance["countryOfOrigin"]
+    entry["country"] = manga_instance["countryOfOrigin"]
 
-        for taglisting in manga_instance["tags"]:
-            if taglisting["isAdult"] is False:
-                entry[taglisting["name"]] = taglisting["rank"]
+    for taglisting in manga_instance["tags"]:
+        if taglisting["isAdult"] is False:
+            entry[taglisting["name"]] = taglisting["rank"]
+        else:
+            pass
+
+    for relation_listing in manga_instance["relations"]["edges"]:
+        if "relation_" + relation_listing["relationType"] in entry:
+            entry["relation_" + relation_listing["relationType"]] += 1
+        else:
+            entry["relation_" + relation_listing["relationType"]] = 1
+        if "relationmedia_" + relation_listing["node"]["type"] in entry:
+            entry["relationmedia_" + relation_listing["node"]["type"]] += 1
+        else:
+            entry["relationmedia_" + relation_listing["node"]["type"]] = 1
+
+    for character_listing in manga_instance["characters"]["edges"]:
+        log.debug(character_listing)
+        if character_listing["role"] == "MAIN":
+            if "Total_Main_Roles" in entry:
+                entry["Total_Main_Roles"] += 1
             else:
-                pass
-
-        for relation_listing in manga_instance["relations"]["edges"]:
-            if "relation_" + relation_listing["relationType"] in entry:
-                entry["relation_" + relation_listing["relationType"]] += 1
+                entry["Total_Main_Roles"] = 1
+            if character_listing["node"]["gender"] == "Female":
+                if "Female_Main_Roles" in entry:
+                    entry["Female_Main_Roles"] += 1
+                else:
+                    entry["Female_Main_Roles"] = 1
+        elif character_listing["role"] == "SUPPORTING":
+            if "Total_Supporting_Roles" in entry:
+                entry["Total_Supporting_Roles"] += 1
             else:
-                entry["relation_" + relation_listing["relationType"]] = 1
-            if "relationmedia_" + relation_listing["node"]["type"] in entry:
-                entry["relationmedia_" + relation_listing["node"]["type"]] += 1
+                entry["Total_Supporting_Roles"] = 1
+            if character_listing["node"]["gender"] == "Female":
+                if "Female_Supporting_Roles" in entry:
+                    entry["Female_Supporting_Roles"] += 1
+                else:
+                    entry["Female_Supporting_Roles"] = 1
+        elif character_listing["role"] == "BACKGROUND":
+            if "Total_Background_Roles" in entry:
+                entry["Total_Background_Roles"] += 1
             else:
-                entry["relationmedia_" + relation_listing["node"]["type"]] = 1
-
-        for character_listing in manga_instance["characters"]["edges"]:
-            log.debug(character_listing)
-            if character_listing["role"] == "MAIN":
-                if "Total_Main_Roles" in entry:
-                    entry["Total_Main_Roles"] += 1
-                else:
-                    entry["Total_Main_Roles"] = 1
-                if character_listing["node"]["gender"] == "Female":
-                    if "Female_Main_Roles" in entry:
-                        entry["Female_Main_Roles"] += 1
-                    else:
-                        entry["Female_Main_Roles"] = 1
-            elif character_listing["role"] == "SUPPORTING":
-                if "Total_Supporting_Roles" in entry:
-                    entry["Total_Supporting_Roles"] += 1
-                else:
-                    entry["Total_Supporting_Roles"] = 1
-                if character_listing["node"]["gender"] == "Female":
-                    if "Female_Supporting_Roles" in entry:
-                        entry["Female_Supporting_Roles"] += 1
-                    else:
-                        entry["Female_Supporting_Roles"] = 1
-            elif character_listing["role"] == "BACKGROUND":
-                if "Total_Background_Roles" in entry:
-                    entry["Total_Background_Roles"] += 1
-                else:
-                    entry["Total_Background_Roles"] = 1
+                entry["Total_Background_Roles"] = 1
 
     staging_list.append(entry)
 
