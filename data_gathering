@@ -145,8 +145,8 @@ entry = defaultdict(int)
 for manga in manga_list:
     entry = defaultdict(int, {
         "id": manga["id"],
-        "eng_title": manga["title"]["english"].rstrip,
-        "rom_title": manga["title"]["romaji"].rstrip,
+        "eng_title": manga["title"]["english"],
+        "rom_title": manga["title"]["romaji"],
         "status": manga["status"],
         "chapters": manga["chapters"],
         "volumes": manga["volumes"],
@@ -182,8 +182,8 @@ for manga in manga_list:
         entry["relationmedia_" + relation["node"]["type"]] += 1
 
     for character in manga["characters"]["edges"]:
-        entry["total_" + character["role"].str.lower() + "_roles"] += 1
-        entry[character["node"]["gender"] + "_" + character["role"].str.lower() + "_roles"] += 1
+        entry["total_" + character["role"].lower() + "_roles"] += 1
+        entry[character["node"]["gender"] + "_" + character["role"].lower() + "_roles"] += 1
 
     staging_list.append(entry)
 
