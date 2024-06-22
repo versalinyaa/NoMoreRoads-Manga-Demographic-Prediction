@@ -125,6 +125,7 @@ while True:
 
     # 4. Checking if response got valid but blank response; ending loop if so
     if rs_status == 200 and len(rs_data["Page"]["media"]) == 0:
+        log.debug("exiting response loop")
         break
 
     # 5. Appending relevant information to
@@ -138,6 +139,7 @@ while True:
 
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
+log.debug("initializing json parsing")
 staging_list = []
 entry = defaultdict(int)
 
@@ -191,5 +193,5 @@ for manga in manga_list:
 
 # Converting list of dictionaries into pandas dataframe
 df_whole = pd.DataFrame(staging_list)
-
 df_whole.to_csv("manga.csv", index=False)
+log.debug(df_whole)
