@@ -9,6 +9,7 @@ The resulting JSON is then parsed into a pandas dataframe, with some transformat
 beforehand where it makes sense. The resulting pandas dataframe is then exported as a csv file.
 """
 
+from collections import defaultdict
 import json
 import time
 import logging
@@ -132,82 +133,51 @@ while True:
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
 staging_list = []
-entry = {}
+entry = defaultdict(int)
 
 # A series of loops to un-nest the json file in the format described above
-for manga_instance in manga_list:
-    entry = {
-        "id": manga_instance["id"],
-        "eng_title": manga_instance["title"]["english"].rstrip,
-        "rom_title": manga_instance["title"]["romaji"].rstrip,
-        "status": manga_instance["status"],
-        "chapters": manga_instance["chapters"],
-        "volumes": manga_instance["volumes"],
-        "start_year": manga_instance["startDate"]["year"],
-        "start_month": manga_instance["startDate"]["month"],
-        "start_day": manga_instance["startDate"]["day"],
-        "end_year": manga_instance["endDate"]["year"],
-        "end_month": manga_instance["endDate"]["month"],
-        "end_day": manga_instance["endDate"]["day"],
-        "favorites": manga_instance["favourites"],
-        "source": manga_instance["source"],
-        "country": manga_instance["countryOfOrigin"]
-    }
+for manga in manga_list:
+    entry = defaultdict(int, {
+        "id": manga["id"],
+        "eng_title": manga["title"]["english"].rstrip,
+        "rom_title": manga["title"]["romaji"].rstrip,
+        "status": manga["status"],
+        "chapters": manga["chapters"],
+        "volumes": manga["volumes"],
+        "start_year": manga["startDate"]["year"],
+        "start_month": manga["startDate"]["month"],
+        "start_day": manga["startDate"]["day"],
+        "end_year": manga["endDate"]["year"],
+        "end_month": manga["endDate"]["month"],
+        "end_day": manga["endDate"]["day"],
+        "favorites": manga["favourites"],
+        "source": manga["source"],
+        "country": manga["countryOfOrigin"]
+    } )
 
-    for scorebucket in manga_instance["stats"]["scoreDistribution"]:
-        entry[f"scored_{scorebucket['score']}_count"] \
-            = scorebucket["amount"]
+    for score_bucket in manga["stats"]["scoreDistribution"]:
+        entry[f"scored_{score_bucket['score']}_count"] \
+            = score_bucket["amount"]
 
-    for statusguys in manga_instance["stats"]["statusDistribution"]:
-        entry[f"status_{statusguys['status']}_count"]\
-            = statusguys["amount"]
+    for status in manga["stats"]["statusDistribution"]:
+        entry[f"status_{status['status']}_count"] \
+            = status["amount"]
 
-    for genrelisting in manga_instance["genres"]:
-        entry[genrelisting] = 1
+    for genre in manga["genres"]:
+        entry[genre] = 1
 
-    for taglisting in manga_instance["tags"]:
-        if taglisting["isAdult"] is False:
-            entry[taglisting["name"]] = taglisting["rank"]
-        else:
-            pass
+    for tag in manga["tags"]:
+        if tag["isAdult"] is True:
+            continue
+        entry[tag["name"]] = tag["rank"]
 
-    for relation_listing in manga_instance["relations"]["edges"]:
-        if "relation_" + relation_listing["relationType"] in entry:
-            entry["relation_" + relation_listing["relationType"]] += 1
-        else:
-            entry["relation_" + relation_listing["relationType"]] = 1
-        if "relationmedia_" + relation_listing["node"]["type"] in entry:
-            entry["relationmedia_" + relation_listing["node"]["type"]] += 1
-        else:
-            entry["relationmedia_" + relation_listing["node"]["type"]] = 1
+    for relation in manga["relations"]["edges"]:
+        entry["relation_" + relation["relationType"]] += 1
+        entry["relationmedia_" + relation["node"]["type"]] += 1
 
-    for character_listing in manga_instance["characters"]["edges"]:
-        log.debug(character_listing)
-        if character_listing["role"] == "MAIN":
-            if "Total_Main_Roles" in entry:
-                entry["Total_Main_Roles"] += 1
-            else:
-                entry["Total_Main_Roles"] = 1
-            if character_listing["node"]["gender"] == "Female":
-                if "Female_Main_Roles" in entry:
-                    entry["Female_Main_Roles"] += 1
-                else:
-                    entry["Female_Main_Roles"] = 1
-        elif character_listing["role"] == "SUPPORTING":
-            if "Total_Supporting_Roles" in entry:
-                entry["Total_Supporting_Roles"] += 1
-            else:
-                entry["Total_Supporting_Roles"] = 1
-            if character_listing["node"]["gender"] == "Female":
-                if "Female_Supporting_Roles" in entry:
-                    entry["Female_Supporting_Roles"] += 1
-                else:
-                    entry["Female_Supporting_Roles"] = 1
-        elif character_listing["role"] == "BACKGROUND":
-            if "Total_Background_Roles" in entry:
-                entry["Total_Background_Roles"] += 1
-            else:
-                entry["Total_Background_Roles"] = 1
+    for character in manga["characters"]["edges"]:
+        entry["total_" + character["role"].str.lower() + "_roles"] += 1
+        entry[character["node"]["gender"] + "_" + character["role"].str.lower() + "_roles"] += 1
 
     staging_list.append(entry)
 
