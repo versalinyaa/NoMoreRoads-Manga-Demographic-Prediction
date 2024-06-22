@@ -92,12 +92,15 @@ URL = "https://graphql.anilist.co"
 # multiple requests we will make
 manga_list = []
 
+# Defining the page number to start on
+page_num = 1
+
 # Looping through the number of pages needed to grab all of the manga
 # records neccesary
 while True:
     # 1. Making and saving request
     response = requests.post(URL, json={"query": QUERY,
-                                        "variables": {"page": len(manga_list) + 1 }},
+                                        "variables": {"page": page_num}},
                                         timeout=15)
     log.debug(response.headers)
     rs_status = response.status_code
@@ -123,12 +126,15 @@ while True:
     # 4. Checking if response got valid but blank response; ending loop if so
     if rs_status == 200 and len(rs_data["Page"]["media"]) == 0:
         break
-    
-    # 5. Appending relevant information to 
+
+    # 5. Appending relevant information to
     manga_list += rs_data["Page"]["media"]
 
-    # 5. Waiting to avoid triggering timeout, if possible
+    # 6. Waiting to avoid triggering timeout, if possible
     time.sleep(random.uniform(0.5, 1.5))
+
+    # 7. Incremeting page number to query
+    page_num += 1
 
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
