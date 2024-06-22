@@ -183,6 +183,8 @@ for manga in manga_list:
 
     for character in manga["characters"]["edges"]:
         entry["total_" + character["role"].lower() + "_roles"] += 1
+        if character["node"]["gender"] is None:
+            continue
         entry[character["node"]["gender"] + "_" + character["role"].lower() + "_roles"] += 1
 
     staging_list.append(entry)
