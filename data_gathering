@@ -73,9 +73,22 @@ query ($page_1: Int, $page_2: Int) {
           }
         }
       }
-      characters{
+      MainCharacters: characters(role: MAIN) {
         edges {
-          role
+          node{
+            gender
+          }
+        }
+      }
+      SuppCharacters: characters(role: SUPPORTING) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      BackCharacters: characters(role: BACKGROUND) {
+        edges {
           node{
             gender
           }
@@ -131,9 +144,22 @@ query ($page_1: Int, $page_2: Int) {
           }
         }
       }
-      characters{
+      MainCharacters: characters(role: MAIN) {
         edges {
-          role
+          node{
+            gender
+          }
+        }
+      }
+      SuppCharacters: characters(role: SUPPORTING) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      BackCharacters: characters(role: BACKGROUND) {
+        edges {
           node{
             gender
           }
