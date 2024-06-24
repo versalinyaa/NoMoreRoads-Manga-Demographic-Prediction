@@ -247,7 +247,10 @@ for manga in manga_list:
         "end_day": manga["endDate"]["day"],
         "favorites": manga["favourites"],
         "source": manga["source"],
-        "country": manga["countryOfOrigin"]
+        "country": manga["countryOfOrigin"],
+        "total_main_roles": len(manga["MainCharacters"]["edges"]),
+        "total_supporting_roles": len(manga["SuppCharacters"]["edges"]),
+        "total_background_roles": len(manga["BackCharacters"]["edges"])
     } )
 
     for score_bucket in manga["stats"]["scoreDistribution"]:
@@ -270,11 +273,20 @@ for manga in manga_list:
         entry["relation_" + relation["relationType"]] += 1
         entry["relationmedia_" + relation["node"]["type"]] += 1
 
-    for character in manga["characters"]["edges"]:
-        entry["total_" + character["role"].lower() + "_roles"] += 1
+    for character in manga["MainCharacters"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] + "_" + character["role"].lower() + "_roles"] += 1
+        entry[character["node"]["gender"] +"_main_roles"] += 1
+
+    for character in manga["SuppCharacters"]["edges"]:
+        if character["node"]["gender"] is None:
+            continue
+        entry[character["node"]["gender"] +"_supporting_roles"] += 1
+
+    for character in manga["BackCharacters"]["edges"]:
+        if character["node"]["gender"] is None:
+            continue
+        entry[character["node"]["gender"] +"_background_roles"] += 1
 
     staging_list.append(entry)
 
