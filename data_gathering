@@ -24,8 +24,8 @@ logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
 # Here we define our query as a multi-line string
 QUERY = """
-query ($page: Int) {
-  Page (page: $page, perPage: 50) {
+query ($page_1: Int, $page_2: Int) {
+  FirstPage: Page (page: $page_1, perPage: 50) {
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
         id
         chapters
@@ -83,6 +83,64 @@ query ($page: Int) {
       }
     }
   }
+  SecondPage: Page (page: $page_2, perPage: 50) {
+    media (type: MANGA, popularity_greater: 200, isAdult: false) {
+      id
+      chapters
+      volumes
+      popularity
+      title{
+          english
+          romaji
+      }
+      status
+      startDate {
+        year
+        month
+        day
+      }
+      stats {
+        scoreDistribution {
+          score
+          amount
+        }
+        statusDistribution {
+          status
+          amount
+        }
+      }
+      favourites
+      source
+      genres
+      countryOfOrigin
+      tags{
+          name
+          rank
+          isAdult
+      }
+      endDate{
+        year
+        month
+        day
+      }
+      relations{
+        edges{
+          relationType
+          node{
+              type
+          }
+        }
+      }
+      characters{
+        edges {
+          role
+          node{
+            gender
+          }
+        }
+      }
+    }
+	}
 }
 """
 
@@ -94,14 +152,15 @@ URL = "https://graphql.anilist.co"
 manga_list = []
 
 # Defining the page number to start on
-page_num = 1
+page_num_1 = 1
+page_num_2 = 2
 
 # Looping through the number of pages needed to grab all of the manga
 # records neccesary
 while True:
     # 1. Making and saving request
     response = requests.post(URL, json={"query": QUERY,
-                                        "variables": {"page": page_num}},
+                                        "variables": {"page_1": page_num_1, "page_2": page_num_2 }},
                                         timeout=15)
     log.debug(response.headers)
     rs_status = response.status_code
@@ -125,18 +184,19 @@ while True:
     log.debug(rs_data is None)
 
     # 4. Checking if response got valid but blank response; ending loop if so
-    if rs_status == 200 and len(rs_data["Page"]["media"]) == 0:
+    if rs_status == 200 and len(rs_data["FirstPage"]["media"]) + len(rs_data["SecondPage"]["media"]) == 0:
         log.debug("exiting response loop")
         break
 
     # 5. Appending relevant information to
-    manga_list += rs_data["Page"]["media"]
+    manga_list += rs_data["FirstPage"]["media"] + rs_data["SecondPage"]["media"]
 
     # 6. Waiting to avoid triggering timeout, if possible
     time.sleep(random.uniform(0.5, 1.5))
 
     # 7. Incremeting page number to query
-    page_num += 1
+    page_num_1 += 2
+    page_num_2 += 2
 
 # Creating empty list to be filled with dictionaries, each one representing a
 # manga, to be later converted to a pandas dataframe
