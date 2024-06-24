@@ -28,8 +28,9 @@ query ($page: Int) {
   Page (page: $page, perPage: 50) {
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
         id
-            chapters
-            volumes
+        chapters
+        volumes
+        popularity
         title{
             english
             romaji
