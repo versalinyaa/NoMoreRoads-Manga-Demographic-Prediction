@@ -230,7 +230,7 @@ while True:
     # 1. Making and saving request
     response = requests.post(URL, json={"query": QUERY,
                                         "variables": {"page_1": page_num_1, "page_2": page_num_2 }},
-                                        timeout=15)
+                                        timeout=20)
     log.debug(response.headers)
     rs_status = response.status_code
     rs_data = json.loads(response.text)["data"]
@@ -319,32 +319,32 @@ for manga in manga_list:
     for character in manga["MainCharacters"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] +"_main_roles"] += 1
+        entry[character["node"]["gender"] + "_main_roles"] += 1
 
     for character in manga["SuppCharacters"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] +"_supporting_roles"] += 1
+        entry[character["node"]["gender"] + "_supporting_roles"] += 1
 
     for character in manga["BackCharacters"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] +"_background_roles"] += 1
+        entry[character["node"]["gender"] + "_background_roles"] += 1
 
     for character in manga["MainCharacters2"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] +"_main_roles"] += 1
+        entry[character["node"]["gender"] + "_main_roles"] += 1
 
     for character in manga["SuppCharacters2"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] +"_supporting_roles"] += 1
+        entry[character["node"]["gender"] + "_supporting_roles"] += 1
 
     for character in manga["BackCharacters2"]["edges"]:
         if character["node"]["gender"] is None:
             continue
-        entry[character["node"]["gender"] +"_background_roles"] += 1
+        entry[character["node"]["gender"] + "_background_roles"] += 1
 
     staging_list.append(entry)
 
