@@ -73,21 +73,42 @@ query ($page_1: Int, $page_2: Int) {
           }
         }
       }
-      MainCharacters: characters(role: MAIN) {
+      MainCharacters: characters(role: MAIN, page: 1) {
         edges {
           node{
             gender
           }
         }
       }
-      SuppCharacters: characters(role: SUPPORTING) {
+      SuppCharacters: characters(role: SUPPORTING, page: 1) {
         edges {
           node{
             gender
           }
         }
       }
-      BackCharacters: characters(role: BACKGROUND) {
+      BackCharacters: characters(role: BACKGROUND, page: 1) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      MainCharacters2: characters(role: MAIN, page: 2) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      SuppCharacters2: characters(role: SUPPORTING, page: 2) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      BackCharacters2: characters(role: BACKGROUND, page: 2) {
         edges {
           node{
             gender
@@ -96,6 +117,7 @@ query ($page_1: Int, $page_2: Int) {
       }
     }
   }
+
   SecondPage: Page (page: $page_2, perPage: 50) {
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
       id
@@ -144,21 +166,42 @@ query ($page_1: Int, $page_2: Int) {
           }
         }
       }
-      MainCharacters: characters(role: MAIN) {
+      MainCharacters: characters(role: MAIN, page: 1) {
         edges {
           node{
             gender
           }
         }
       }
-      SuppCharacters: characters(role: SUPPORTING) {
+      SuppCharacters: characters(role: SUPPORTING, page: 1) {
         edges {
           node{
             gender
           }
         }
       }
-      BackCharacters: characters(role: BACKGROUND) {
+      BackCharacters: characters(role: BACKGROUND, page: 1) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      MainCharacters2: characters(role: MAIN, page: 2) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      SuppCharacters2: characters(role: SUPPORTING, page: 2) {
+        edges {
+          node{
+            gender
+          }
+        }
+      }
+      BackCharacters2: characters(role: BACKGROUND, page: 2) {
         edges {
           node{
             gender
