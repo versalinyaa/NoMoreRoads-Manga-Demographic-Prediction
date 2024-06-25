@@ -291,9 +291,9 @@ for manga in manga_list:
         "favorites": manga["favourites"],
         "source": manga["source"],
         "country": manga["countryOfOrigin"],
-        "total_main_roles": len(manga["MainCharacters"]["edges"]),
-        "total_supporting_roles": len(manga["SuppCharacters"]["edges"]),
-        "total_background_roles": len(manga["BackCharacters"]["edges"])
+        "total_main_roles": len(manga["MainCharacters"]["edges"]) + len(manga["MainCharacters2"]["edges"]),
+        "total_supporting_roles": len(manga["SuppCharacters"]["edges"]) + len(manga["SuppCharacters2"]["edges"]),
+        "total_background_roles": len(manga["BackCharacters"]["edges"]) + len(manga["BackCharacters2"]["edges"])
     } )
 
     for score_bucket in manga["stats"]["scoreDistribution"]:
@@ -327,6 +327,21 @@ for manga in manga_list:
         entry[character["node"]["gender"] +"_supporting_roles"] += 1
 
     for character in manga["BackCharacters"]["edges"]:
+        if character["node"]["gender"] is None:
+            continue
+        entry[character["node"]["gender"] +"_background_roles"] += 1
+
+    for character in manga["MainCharacters2"]["edges"]:
+        if character["node"]["gender"] is None:
+            continue
+        entry[character["node"]["gender"] +"_main_roles"] += 1
+
+    for character in manga["SuppCharacters2"]["edges"]:
+        if character["node"]["gender"] is None:
+            continue
+        entry[character["node"]["gender"] +"_supporting_roles"] += 1
+
+    for character in manga["BackCharacters2"]["edges"]:
         if character["node"]["gender"] is None:
             continue
         entry[character["node"]["gender"] +"_background_roles"] += 1
