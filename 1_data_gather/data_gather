@@ -144,7 +144,7 @@ while True:
     # 1. Making and saving request
     response = requests.post(URL, json={"query": QUERY,
                                         "variables": {"page_1": page_num_1, "page_2": page_num_2 }},
-                                        timeout=20)
+                                        timeout=25)
     log.debug(response.headers)
     rs_status = response.status_code
     rs_data = json.loads(response.text)["data"]
