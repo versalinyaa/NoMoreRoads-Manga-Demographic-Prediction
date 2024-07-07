@@ -22,97 +22,81 @@ LOG_LEVEL = logging.DEBUG
 log = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
-PAGE_QUERY = """
-    media (type: MANGA, popularity_greater: 200, isAdult: false) {
+CHARACRER_QUERY = """
+        edges {
+          node{
+            gender
+          }
+        }
+"""
+
+PAGE_QUERY = f"""
+    media (type: MANGA, popularity_greater: 200, isAdult: false) {{
       id
       chapters
       volumes
       popularity
-      title{
+      title{{
         english
         romaji
-      }
+      }}
       status
-      startDate {
+      startDate {{
         year
         month
         day
-      }
-      stats {
-        scoreDistribution {
+      }}
+      stats {{
+        scoreDistribution {{
           score
           amount
-        }
-        statusDistribution {
+        }}
+        statusDistribution {{
           status
           amount
-        }
-      }
+        }}
+      }}
       favourites
       source
       genres
       countryOfOrigin
-      tags{
+      tags{{
         name
         rank
         isAdult
-      }
-      endDate{
+      }}
+      endDate{{
         year
         month
         day
-      }
-      relations{
-        edges{
+      }}
+      relations{{
+        edges{{
           relationType
-          node{
+          node{{
             type
-          }
-        }
-      }
-      MainCharacters: characters(role: MAIN, page: 1) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      SuppCharacters: characters(role: SUPPORTING, page: 1) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      BackCharacters: characters(role: BACKGROUND, page: 1) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      MainCharacters2: characters(role: MAIN, page: 2) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      SuppCharacters2: characters(role: SUPPORTING, page: 2) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      BackCharacters2: characters(role: BACKGROUND, page: 2) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-    }
+          }}
+        }}
+      }}
+      MainCharacters: characters(role: MAIN, page: 1) {{
+        {CHARACRER_QUERY}
+      }}
+      SuppCharacters: characters(role: SUPPORTING, page: 1) {{
+        {CHARACRER_QUERY}
+      }}
+      BackCharacters: characters(role: BACKGROUND, page: 1) {{
+        {CHARACRER_QUERY}
+      }}
+      MainCharacters2: characters(role: MAIN, page: 2) {{
+        {CHARACRER_QUERY}
+      }}
+      SuppCharacters2: characters(role: SUPPORTING, page: 2) {{
+        {CHARACRER_QUERY}
+      }}
+      BackCharacters2: characters(role: BACKGROUND, page: 2) {{
+        {CHARACRER_QUERY}
+      }}
+    }}
 """
 
 # Here we define our query as a multi-line string
