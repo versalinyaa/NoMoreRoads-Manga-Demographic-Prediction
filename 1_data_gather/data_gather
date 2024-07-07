@@ -24,49 +24,49 @@ logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
 PAGE_QUERY = """
     media (type: MANGA, popularity_greater: 200, isAdult: false) {
-        id
-        chapters
-        volumes
-        popularity
-        title{
-            english
-            romaji
+      id
+      chapters
+      volumes
+      popularity
+      title{
+        english
+        romaji
+      }
+      status
+      startDate {
+        year
+        month
+        day
+      }
+      stats {
+        scoreDistribution {
+          score
+          amount
         }
-        status
-        startDate {
-          year
-          month
-          day
+        statusDistribution {
+          status
+          amount
         }
-        stats {
-          scoreDistribution {
-            score
-            amount
-          }
-          statusDistribution {
-            status
-            amount
-          }
-        }
-        favourites
-        source
-        genres
-        countryOfOrigin
-        tags{
-            name
-            rank
-            isAdult
-        }
-        endDate{
-          year
-          month
-          day
-        }
+      }
+      favourites
+      source
+      genres
+      countryOfOrigin
+      tags{
+        name
+        rank
+        isAdult
+      }
+      endDate{
+        year
+        month
+        day
+      }
       relations{
         edges{
           relationType
           node{
-              type
+            type
           }
         }
       }
