@@ -1,0 +1,15 @@
+[tool.poetry]
+# We use Poetry only to manage the project's dependencies, not to create
+# a distributable package.
+package-mode = false
+
+[tool.poetry.dependencies]
+# Python 3.10 provides the 'match' statement.
+python = "^3.10"
+
+[build-system]
+requires = [
+    # Poetry 1.8 provides option 'tool.poetry.package-mode'.
+    "poetry-core>=1.8",
+]
+build-backend = "poetry.core.masonry.api"

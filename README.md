@@ -27,3 +27,46 @@ The tag gather script queries the Anilist API for the full list of media tags (e
 This Jupyter Notebook utilizes Pandas and other Python libraries to explore the data obtained from AniList, with an eye towards imputing missing values, feature engineering, and eventually leveraging classification algorithms to predict the demographic label. 
 
 The notebook also performs some data wrangling tasks, as the data extracted from the API is not fully formatted the way we need to perform useful analysis.
+
+## Development Setup
+
+This project uses [Poetry][] to manage Python dependencies, which are defined in
+[pyproject.toml][].  Poetry >= 1.8 is required.
+
+```shell
+$ pip install 'poetry>=1.8'
+```
+
+Before creating the workspace's Python [virtual environment][venv] with
+_poetry_, it is recommended to choose a simplified prompt when inside the
+virtual environment.  The command below configures the prompt for only this
+workspace.
+
+```shell
+$ poetry config --local virtualenvs.prompt "whatever"
+```
+
+Create the workspace's Python virtual environment and install the project's
+dependencies into it.
+
+```shell
+$ poetry install
+```
+
+Now you can run the scripts in this project, such as `data_gather`, with or
+without entering the Python virtual environment.
+
+```shell
+# run the script by entering a subshell where the venv is actice
+$ poetry shell
+(venv) $ path/to/script
+
+OR
+
+# run the script without entering the venv
+$ poetry run path/to/script
+```
+
+[poetry]: https://python-poetry.org
+[pyproject.toml]: ./pyproject.toml
+[venv]: https://docs.python.org/3/library/venv.html

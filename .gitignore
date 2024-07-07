@@ -1,3 +1,6 @@
+# user's local poetry config
+poetry.toml
+
 .Rproj.user
 .Rhistory
 .RData
