@@ -36,6 +36,7 @@ PAGE_QUERY = f"""
       chapters
       volumes
       popularity
+      meanScore
       title{{
         english
         romaji
@@ -178,6 +179,7 @@ for manga in manga_list:
         "eng_title": manga["title"]["english"],
         "rom_title": manga["title"]["romaji"],
         "popularity": manga["popularity"],
+        "mean_score": manga["meanScore"],
         "status": manga["status"],
         "chapters": manga["chapters"],
         "volumes": manga["volumes"],
