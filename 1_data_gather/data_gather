@@ -15,6 +15,7 @@ import time
 import logging
 import sys
 import random
+
 import requests
 import pandas as pd
 
@@ -120,13 +121,13 @@ PAGE_QUERY = """
 QUERY = f"""
 query ($page_1: Int, $page_2: Int) {{
   FirstPage: Page (page: $page_1, perPage: 50) {{
-    {PAGE_QUERY}
+    {page_query}
   }}
   SecondPage: Page (page: $page_2, perPage: 50) {{
-    {PAGE_QUERY}
+    {page_query}
 	}}
 }}
-"""
+""".format(page_query=textwrap.indent(PAGE_QUERY, "    "))
 
 # Defining URL for request
 URL = "https://graphql.anilist.co"
