@@ -273,5 +273,5 @@ for manga in manga_list:
 
 # Converting list of dictionaries into pandas dataframe
 df_whole = pd.DataFrame(staging_list)
-df_whole.to_csv("manga.csv", index=False)
+df_whole.to_csv("../data/manga.csv", index=False)
 log.debug(df_whole.shape[0])
