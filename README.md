@@ -16,13 +16,13 @@ This project includes a [data dictionary](./data/data_dictionary.md) in order to
 
 This project has been divided up into several sub-projects, each with their own directory in the repository, for clarity.
 
-### [Data Gathering](https://github.com/NoMoreRoads/Manga-Demographic-Prediction/tree/main/1_data_gather)
+### [Data Gathering](./1_data_gather)
 
 The data gather script sends iterative requests to the [AniList API](https://anilist.gitbook.io/anilist-apiv2-docs/overview/graphql/getting-started) containing queries written in GraphQL, in order to scrape the API for data on manga listed on the site within specified parameters (over 200 people have it on their "list", it is not considered "adult"). The queried information is then wrangled into a more recognizably rectangular format, rather than the graph structure it is intially returned in. This rectangular structure is placed into a pandas dataframe, and then exported as a csv for further processing.
 
 The tag gather script queries the Anilist API for the full list of media tags (excluding adult tags) with their associated descriptions, formats the result, converts it to pandas dataframe format, and exports the result as a csv which serves as an appendix to the data dictionary.
 
-### [Data Exploration](https://github.com/NoMoreRoads/Manga-Demographic-Prediction/tree/main/2_data_explore)
+### [Data Exploration](./2_data_explore)
 
 This Jupyter Notebook utilizes Pandas and other Python libraries to explore the data obtained from AniList, with an eye towards imputing missing values, feature engineering, and eventually leveraging classification algorithms to predict the demographic label. 
 
