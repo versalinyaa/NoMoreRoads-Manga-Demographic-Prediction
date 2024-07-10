@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+
+# Copyright 2024 Zach Lesher <lesher.zachary@protonmail.com>
+# SPDX-License-Identifier: MIT
+
+"""
+This script queries the Anilist API for the full list of media tags (excluding adult tags) with
+their associated descriptions, formats the result, converts it to pandas dataframe format, and
+exports the result as a csv which serves as an appendix to the data dictionary.
+"""

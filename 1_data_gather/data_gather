@@ -15,6 +15,7 @@ import time
 import logging
 import sys
 import random
+import textwrap
 
 import requests
 import pandas as pd
@@ -24,108 +25,110 @@ log = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
 PAGE_QUERY = """
-    media (type: MANGA, popularity_greater: 200, isAdult: false) {
-      id
-      chapters
-      volumes
-      popularity
-      meanScore
-      title{
-        english
-        romaji
-      }
-      status
-      startDate{
+media (type: MANGA, popularity_greater: 200, isAdult: false) {
+    id
+    chapters
+    volumes
+    popularity
+    meanScore
+    title{
+    english
+    romaji
+    }
+    status
+    startDate{
         year
         month
         day
-      }
-      stats{
+    }
+    stats{
         scoreDistribution{
-          score
-          amount
+            score
+            amount
         }
         statusDistribution{
-          status
-          amount
+            status
+            amount
         }
-      }
-      favourites
-      source
-      genres
-      countryOfOrigin
-      tags{
+    }
+    favourites
+    source
+    genres
+    countryOfOrigin
+    tags{
         name
         rank
         isAdult
-      }
-      endDate{
+        category
+        description
+    }
+    endDate{
         year
         month
         day
-      }
-      relations{
-        edges{
-          relationType
-          node{
-            type
-          }
-        }
-      }
-      MainCharacters: characters(role: MAIN, page: 1) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      SuppCharacters: characters(role: SUPPORTING, page: 1) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      BackCharacters: characters(role: BACKGROUND, page: 1) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      MainCharacters2: characters(role: MAIN, page: 2) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      SuppCharacters2: characters(role: SUPPORTING, page: 2) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
-      BackCharacters2: characters(role: BACKGROUND, page: 2) {
-        edges {
-          node{
-            gender
-          }
-        }
-      }
     }
+    relations{
+        edges{
+            relationType
+            node{
+                type
+            }
+        }
+    }
+    MainCharacters: characters(role: MAIN, page: 1) {
+        edges {
+            node{
+                gender
+            }
+        }
+    }
+    SuppCharacters: characters(role: SUPPORTING, page: 1) {
+        edges {
+            node{
+                gender
+            }
+        }
+    }
+    BackCharacters: characters(role: BACKGROUND, page: 1) {
+        edges {
+            node{
+                gender
+            }
+        }
+    }
+    MainCharacters2: characters(role: MAIN, page: 2) {
+        edges {
+            node{
+                gender
+            }
+        }
+    }
+    SuppCharacters2: characters(role: SUPPORTING, page: 2) {
+        edges {
+            node{
+                gender
+            }
+        }
+    }
+    BackCharacters2: characters(role: BACKGROUND, page: 2) {
+        edges {
+            node{
+                gender
+            }
+        }
+    }
+}
 """
 
 # Here we define our query as a multi-line string
-QUERY = f"""
+QUERY = """
 query ($page_1: Int, $page_2: Int) {{
-  FirstPage: Page (page: $page_1, perPage: 50) {{
-    {page_query}
-  }}
-  SecondPage: Page (page: $page_2, perPage: 50) {{
-    {page_query}
-	}}
+    FirstPage: Page (page: $page_1, perPage: 50) {{
+        {page_query}
+    }}
+    SecondPage: Page (page: $page_2, perPage: 50) {{
+        {page_query}
+    }}
 }}
 """.format(page_query=textwrap.indent(PAGE_QUERY, "    "))
 
@@ -150,7 +153,7 @@ while True:
     log.debug(response.headers)
     rs_status = response.status_code
     try:
-      rs_data = json.loads(response.text)["data"]
+        rs_data = json.loads(response.text)["data"]
     except KeyError:
         log.debug(json.loads(response.text))
         log.debug("data missing from dict")
@@ -173,7 +176,8 @@ while True:
     log.debug(rs_data is None)
 
     # 4. Checking if response got valid but blank response; ending loop if so
-    if rs_status == 200 and len(rs_data["FirstPage"]["media"]) + len(rs_data["SecondPage"]["media"]) == 0:
+    if rs_status == 200 \
+    and len(rs_data["FirstPage"]["media"]) + len(rs_data["SecondPage"]["media"]) == 0:
         log.debug(rs_data)
         log.debug("exiting response loop")
         break
@@ -192,7 +196,6 @@ while True:
 # manga, to be later converted to a pandas dataframe
 log.debug("initializing json parsing")
 staging_list = []
-entry = defaultdict(int)
 
 # A series of loops to un-nest the json file in the format described above
 for manga in manga_list:
@@ -214,9 +217,12 @@ for manga in manga_list:
         "favorites": manga["favourites"],
         "source": manga["source"],
         "country": manga["countryOfOrigin"],
-        "total_main_roles": len(manga["MainCharacters"]["edges"]) + len(manga["MainCharacters2"]["edges"]),
-        "total_supporting_roles": len(manga["SuppCharacters"]["edges"]) + len(manga["SuppCharacters2"]["edges"]),
-        "total_background_roles": len(manga["BackCharacters"]["edges"]) + len(manga["BackCharacters2"]["edges"])
+        "total_main_roles": len(manga["MainCharacters"]["edges"])
+            + len(manga["MainCharacters2"]["edges"]),
+        "total_supporting_roles": len(manga["SuppCharacters"]["edges"])
+            + len(manga["SuppCharacters2"]["edges"]),
+        "total_background_roles": len(manga["BackCharacters"]["edges"])
+            + len(manga["BackCharacters2"]["edges"])
     } )
 
     for score_bucket in manga["stats"]["scoreDistribution"]:
