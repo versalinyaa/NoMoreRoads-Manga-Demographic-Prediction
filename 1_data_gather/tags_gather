@@ -13,6 +13,7 @@ import logging
 import sys
 import json
 
+import pandas as pd
 import requests
 
 LOG_LEVEL = logging.DEBUG
@@ -25,8 +26,8 @@ query {
   MediaTagCollection {
     isAdult
     name
-    description
     category
+    description
   }
 }
 """
@@ -34,5 +35,9 @@ query {
 # Defining URL for request
 URL = "https://graphql.anilist.co"
 
-RESPONSE = requests.post(URL, json={"query": QUERY}, timeout=5)
+RESPONSE = requests.post(URL, json={"query": QUERY}, timeout=10)
 RESPONSE_CONTENT = json.loads(RESPONSE.text)["data"]["MediaTagCollection"]
+FULL_DF = pd.DataFrame(RESPONSE_CONTENT).query("isAdult == False").drop("isAdult", axis=1).sort_values("category", ascending=True)
+log.debug(FULL_DF)
+
+df_whole.to_csv("../data/tag_reference.csv", index=False)
