@@ -8,3 +8,31 @@ This script queries the Anilist API for the full list of media tags (excluding a
 their associated descriptions, formats the result, converts it to pandas dataframe format, and
 exports the result as a csv which serves as an appendix to the data dictionary.
 """
+
+import logging
+import sys
+import json
+
+import requests
+
+LOG_LEVEL = logging.DEBUG
+log = logging.getLogger(__name__)
+logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
+
+# Defining query as a multi-line string
+QUERY = """
+query {
+  MediaTagCollection {
+    isAdult
+    name
+    description
+    category
+  }
+}
+"""
+
+# Defining URL for request
+URL = "https://graphql.anilist.co"
+
+RESPONSE = requests.post(URL, json={"query": QUERY}, timeout=5)
+RESPONSE_CONTENT = json.loads(RESPONSE.text)["data"]["MediaTagCollection"]
