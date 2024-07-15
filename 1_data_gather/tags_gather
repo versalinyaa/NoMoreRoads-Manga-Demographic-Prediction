@@ -37,7 +37,9 @@ URL = "https://graphql.anilist.co"
 
 RESPONSE = requests.post(URL, json={"query": QUERY}, timeout=10)
 RESPONSE_CONTENT = json.loads(RESPONSE.text)["data"]["MediaTagCollection"]
-FULL_DF = pd.DataFrame(RESPONSE_CONTENT).query("isAdult == False").drop("isAdult", axis=1).sort_values("category", ascending=True)
+FULL_DF = pd.DataFrame(RESPONSE_CONTENT)\
+    .query("isAdult == False").drop("isAdult", axis=1)\
+    .sort_values("category", ascending=True)
 log.debug(FULL_DF)
 
-df_whole.to_csv("../data/tag_reference.csv", index=False)
+FULL_DF.to_csv("../data/tag_reference.csv", index=False)
