@@ -82,7 +82,7 @@ The number of users who have the work listed under a given status \[statusname\]
 A series of binary features indicating whether the work is listed as being of the genre \[genre\]. Genres are not mutually exclusive, and a work can be listed under multiple genres. The possible genres are: Action, Adventure, Comedy, Drama, Ecchi, Fantasy, Horror, Mahou Shoujo, Mecha, Music, Mystery, Psychological, Romance, Sci-Fi, Slice of Life, Sports, Supernatural, and Thriller.
 
 ### \[tag\]:
-A series of features indicating the score (0 to 100, inclusive) users have given to a given tag \[tag\]. The score is meant to represent how central a theme the tag is to the work, where zero indicates that no user has submitted the tag to the work, and 100 indicates that it is a central theme. Each tag is associated with a given category ("category"). **the site-generated descriptions of each tag are enumerated in the appendix to this data dictionary, which can be accessed [here](../data/tag_reference.csv).**
+A series of features indicating the score (0 to 100, inclusive) users have given to a given tag \[tag\]. The score is meant to represent how central a theme the tag is to the work, where zero indicates that no user has submitted the tag to the work, and 100 indicates that it is a central theme. **the site-generated descriptions of each tag are enumerated in the appendix to this data dictionary, which can be accessed [here](../data/tag_reference.csv).**
 
 ### relation_\[relationtype\]:
 A feature indicating the number of related media that are related in a given way \[relationtype\]. Examples may include the number of sequels, prequels, or spinoffs a work has.
