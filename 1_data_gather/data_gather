@@ -238,7 +238,7 @@ for manga in manga_list:
     for tag in manga["tags"]:
         if tag["isAdult"] is True:
             continue
-        entry["tag_" + tag["category"] + "_" + tag["name"]] = tag["rank"]
+        entry[tag["name"]] = tag["rank"]
 
     for relation in manga["relations"]["edges"]:
         entry["relation_" + relation["relationType"]] += 1

@@ -70,25 +70,25 @@ The number of characters AniList users have associated with the work who are lis
 The number of characters AniList users have associated with the work who are listed as having a "supporting" cast role in the work.
 
 ## Dynamic Feature Names
-The following are features whose names are not hard-coded during the data collection process, but rather are named according to some programmatic process. The names given here may not match the feature names present in the data, but some explanation will be given as to the format of the name.
+The following are features whose names are not hard-coded during the data collection process, but rather are named according to some programmatic process. The names given here may not match the feature names present in the data, but some explanation will be given as to the format of the name. Dyanmic portions of the tag name will be enclosed in square brackets \[\].
 
-### scored_##_count:
-The number of users who have given the manga a score (bounded between 1 and 100, inclusive) that the site considers to fall within a given "##" bucket. AniList's precise methodology for determining these buckets is not clear.
+### scored_\[##\]_count:
+The number of users who have given the manga a score (bounded between 1 and 100, inclusive) that the site considers to fall within a given \[##\] bucket. AniList's precise methodology for determining these buckets is not clear.
 
-### status_XYZ_count:
-The number of users who have the work listed under a given status "XYZ" on their list. Usually "PLANNING" indicates that they intend to read it, "DROPPED" indicates that they began reading the work but did not finish, etc.
+### status_\[statusname\]_count:
+The number of users who have the work listed under a given status \[statusname\] on their list. Usually "PLANNING" indicates that they intend to read it, "DROPPED" indicates that they began reading the work but did not finish, etc.
 
-### genre_Xyz:
-A binary feature indicating whether the work is listed as being of a given genre "Xyz". Genres are not mutually exclusive, and a work can be listed under multiple.
+### \[genre\]:
+A series of binary features indicating whether the work is listed as being of the genre \[genre\]. Genres are not mutually exclusive, and a work can be listed under multiple genres. The possible genres are: Action, Adventure, Comedy, Drama, Ecchi, Fantasy, Horror, Mahou Shoujo, Mecha, Music, Mystery, Psychological, Romance, Sci-Fi, Slice of Life, Sports, Supernatural, and Thriller.
 
-### tag_category_name:
-A feature indicating the score (0 to 100, inclusive) users have given to a given tag ("name"). The score is meant to represent how central a theme the tag is to the work, where zero indicates that no user has submitted the tag to the work, and 100 indicates that it is a central theme. Each tag is associated with a given category ("category"). **the site-generated descriptions of each tag are enumerated in the appendix to this data dictionary, which can be accessed [here](../data/tag_reference.csv).**
+### \[tag\]:
+A series of features indicating the score (0 to 100, inclusive) users have given to a given tag \[tag\]. The score is meant to represent how central a theme the tag is to the work, where zero indicates that no user has submitted the tag to the work, and 100 indicates that it is a central theme. Each tag is associated with a given category ("category"). **the site-generated descriptions of each tag are enumerated in the appendix to this data dictionary, which can be accessed [here](../data/tag_reference.csv).**
 
-### relation_relationtype:
-A feature indicating the number of related media that are related in a given way ("relationtype"). Examples may include the number of sequels, prequels, or spinoffs a work has.
+### relation_\[relationtype\]:
+A feature indicating the number of related media that are related in a given way \[relationtype\]. Examples may include the number of sequels, prequels, or spinoffs a work has.
 
-### relationmedia_mediatype:
-A feature indicating the number of related media that are of a given format type ("mediatype"). Examples my include the number of novels related to the work, or the number of movies.
+### relationmedia_\[mediatype\]:
+A feature indicating the number of related media that are of a given format type \[meditype\]. Examples my include the number of novels related to the work, or the number of movies.
 
-### gender_xyz_roles:
-The number of characters associated with the property who have a given gender ("gender") and role type ("xyz"). Note that gender can be any string, and role type can be one of "main", "supporting", or "background". Excludes characters with a missing gender value.
+### \[gender\]_\[type\]_roles:
+The number of characters associated with the property who have a given gender \[gender\] and role type \[type\]. Note that gender can be any string, and role type can be one of "main", "supporting", or "background". Excludes characters with a missing gender value.

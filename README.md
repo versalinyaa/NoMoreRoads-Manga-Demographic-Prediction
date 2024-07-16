@@ -10,7 +10,7 @@ This repository contains a script for scraping the API maintained by the media c
 
 [Manga Demographic Groups](https://en.wikipedia.org/wiki/Sh%C5%8Dnen_manga) refer to the way manga magazine publishers in Japan categorize their magazines by the presumed demographic audience they are attempting to reach. In general, "shounen" is intended for adolescent boys, "shoujo" is intended for adolescent girls, "josei" is intended for adult women, and "seinen" is intended for adult men. The actual readership of these works is often more diverse than these labels suggest, and some have suggested that the meaning of these categories has changed over time, and more suggest a sort of "genre" rather than explicitly attemtping to reach one sort of reader.
 
-This project includes a [data dictionary]("./data/data_dictionary.md") in order to provide a more detailed look into the individual features contained within the data set.
+This project includes a [data dictionary](./data/data_dictionary.md) in order to provide a more detailed look into the individual features contained within the data set.
 
 ## Sub-projects
 
