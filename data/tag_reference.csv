@@ -1,0 +1,330 @@
+name,category,description
+Polyamorous,Cast,Features a character who is in a consenting relationship with multiple people at one time.
+Primarily Animal Cast,Cast-Main Cast,Main cast is mostly composed animal or animal-like characters.
+Ensemble Cast,Cast-Main Cast,Features a large cast of characters with (almost) equal screen time and importance to the plot.
+Male Protagonist,Cast-Main Cast,Main character is male.
+Estranged Family,Cast-Main Cast,At least one family member of the MC intentionally distances themselves or a family distances themselves from a person related to the MC.
+Anti-Hero,Cast-Main Cast,Features a protagonist who lacks conventional heroic attributes and may be considered a borderline villain.
+Primarily Adult Cast,Cast-Main Cast,Main cast is mostly composed of characters above a high school age.
+Female Protagonist,Cast-Main Cast,Main character is female.
+Primarily Child Cast,Cast-Main Cast,Main cast is mostly composed of characters below a high school age.
+Primarily Female Cast,Cast-Main Cast,Main cast is mostly composed of female characters.
+Primarily Teen Cast,Cast-Main Cast,Main cast is mostly composed of teen characters.
+Primarily Male Cast,Cast-Main Cast,Main cast is mostly composed of male characters.
+Elderly Protagonist,Cast-Main Cast,"The protagonist is either over 60 years of age, has an elderly appearance, or, in the case of non-humans, is considered elderly for their species."
+Oiran,Cast-Traits,Prominently features a courtesan character of the Japanese Edo Period.
+Nun,Cast-Traits,Prominently features a character who is a nun.
+Cyborg,Cast-Traits,Prominently features a human character whose physiological functions are aided or enhanced by artificial means.
+Office Lady,Cast-Traits,Prominently features a female office worker or OL.
+Delinquents,Cast-Traits,"Features characters with a notorious image and attitude, sometimes referred to as ""yankees""."
+Nudity,Cast-Traits,Features a character wearing no clothing or exposing intimate body parts.
+Crossdressing,Cast-Traits,Prominently features a character dressing up as the opposite sex.
+Orphan,Cast-Traits,Prominently features a character that is an orphan.
+Demons,Cast-Traits,Prominently features malevolent otherworldly creatures.
+Pirates,Cast-Traits,Prominently features sea-faring adventurers branded as criminals by the law.
+Cowboys,Cast-Traits,Features Western or Western-inspired cowboys.
+Cosplay,Cast-Traits,Features dressing up as a different character or profession.
+Clone,Cast-Traits,Prominently features a character who is an artificial exact copy of another organism.
+Chuunibyou,Cast-Traits,"Prominently features a character with ""Middle School 2nd Year Syndrome"", who either acts like a know-it-all adult or falsely believes they have special powers."
+Chimera,Cast-Traits,"Features a beast made by combining animals, usually with humans."
+Ojou-sama,Cast-Traits,"Features a wealthy, high-class, oftentimes stuck up and demanding female character."
+Detective,Cast-Traits,Features a character who investigates and solves crimes.
+Dragons,Cast-Traits,Prominently features mythical reptiles which generally have wings and can breathe fire.
+Disability,Cast-Traits,"A work that features one or more characters with a physical, mental, cognitive, or developmental condition that impairs, interferes with, or limits the person's ability to engage in certain tasks or actions."
+Ghost,Cast-Traits,Prominently features a character who is a ghost.
+Goblin,Cast-Traits,"A goblin is a monstrous creature from European folklore. They are almost always small and grotesque, mischievous or outright malicious, and greedy. Sometimes with magical abilities."
+Gods,Cast-Traits,Prominently features a character of divine or religious nature.
+Gyaru,Cast-Traits,"Prominently features a female character who has a distinct American-emulated fashion style, such as tanned skin, bleached hair, and excessive makeup. Also known as gal."
+Hikikomori,Cast-Traits,"Prominently features a character who withdraws from social life, often seeking extreme isolation."
+Homeless,Cast-Traits,Prominently features a character that is homeless.
+Idol,Cast-Traits,Centers around the life and activities of an idol.
+Femboy,Cast-Traits,Features a boy who exhibits characteristics or behaviors considered in many cultures to be typical of girls.
+Kemonomimi,Cast-Traits,Prominently features humanoid characters with animal ears.
+Dinosaurs,Cast-Traits,"Prominently features Dinosaurs, prehistoric reptiles that went extinct millions of years ago."
+Fairy,Cast-Traits,Prominently features a character who is a fairy.
+Maids,Cast-Traits,Prominently features a character who is a maid.
+Elf,Cast-Traits,Prominently features a character who is an elf.
+Mermaid,Cast-Traits,A mythological creature with the body of a human and the tail of a fish.
+Monster Boy,Cast-Traits,Prominently features a male character who is a part-monster.
+Monster Girl,Cast-Traits,Prominently features a female character who is part-monster.
+Dullahan,Cast-Traits,"Prominently features a character who is a Dullahan, a creature from Irish Folklore with a head that can be detached from its main body."
+Nekomimi,Cast-Traits,Humanoid characters with cat-like features such as cat ears and a tail.
+Ninja,Cast-Traits,"Prominently features Japanese warriors traditionally trained in espionage, sabotage and assasination."
+Dissociative Identities,Cast-Traits,A case where one or more people share the same body.
+Kuudere,Cast-Traits,"Prominently features a character who generally retains a cold, blunt and cynical exterior, but once one gets to know them, they have a very warm and loving interior."
+Centaur,Cast-Traits,Prominently features a character with a human upper body and the lower body of a horse.
+Zombie,Cast-Traits,Prominently features reanimated corpses which often prey on live humans and turn them into zombies.
+Asexual,Cast-Traits,Features a character who isn't sexually attracted to people of any sex or gender.
+Aromantic,Cast-Traits,Features a character who experiences little to no romantic attraction.
+Veterinarian,Cast-Traits,Prominently features a veterinarian or one of the main characters is a veterinarian.
+Aliens,Cast-Traits,Prominently features extraterrestrial lifeforms.
+Vampire,Cast-Traits,Prominently features a character who is a vampire.
+Succubus,Cast-Traits,"Prominently features a character who is a succubus, a creature in medieval folklore that typically uses their sexual prowess to trap and seduce people to feed off them."
+Tanned Skin,Cast-Traits,Prominently features characters with tanned skin.
+Amnesia,Cast-Traits,Prominently features a character(s) with memory loss.
+Skeleton,Cast-Traits,Prominently features skeleton(s) as a character.
+Teacher,Cast-Traits,"Protagonist is an educator, usually in a school setting."
+Tomboy,Cast-Traits,Features a girl who exhibits characteristics or behaviors considered in many cultures to be typical of boys.
+Transgender,Cast-Traits,Features a character whose gender identity differs from the sex they were assigned at birth.
+Anthropomorphism,Cast-Traits,Contains non-human character(s) that have attributes or characteristics of a human being.
+Tsundere,Cast-Traits,Prominently features a character who acts cold and hostile in order to mask warmer emotions.
+Robots,Cast-Traits,Prominently features humanoid machines.
+Artificial Intelligence,Cast-Traits,Intelligent non-organic machines that work and react similarly to humans.
+Arranged Marriage,Cast-Traits,"Features two characters made to marry each other, usually by their family."
+Angels,Cast-Traits,Prominently features spiritual beings usually represented with wings and halos and believed to be attendants of God.
+Shrine Maiden,Cast-Traits,Prominently features a character who is a shrine maiden.
+Vikings,Cast-Traits,Prominently features Scandinavian seafaring pirates and warriors.
+Villainess,Cast-Traits,Centers around or prominently features a villainous noble lady.
+Yandere,Cast-Traits,"Prominently features a character who is obsessively in love with another, to the point of acting deranged or violent."
+Butler,Cast-Traits,Prominently features a character who is a butler.
+Witch,Cast-Traits,Prominently features a character who is a witch.
+Samurai,Cast-Traits,Prominently features warriors of medieval Japanese nobility bound by a code of honor.
+Werewolf,Cast-Traits,Prominently features a character who is a werewolf.
+VTuber,Cast-Traits,Prominently features a character who is either an actual or fictive VTuber.
+Age Regression,Cast-Traits,Prominently features a character who was returned to a younger state.
+Twins,Cast-Traits,Prominently features two or more siblings that were born at one birth.
+Agender,Cast-Traits,Prominently features agender characters.
+Shoujo,Demographic,Target demographic is teenage and young adult females.
+Shounen,Demographic,Target demographic is teenage and young adult males.
+Josei,Demographic,Target demographic is adult females.
+Kids,Demographic,Target demographic is young children.
+Seinen,Demographic,Target demographic is adult males.
+Matriarchy,Setting,Prominently features a country that is ruled by a Queen or a society that is dominated by female inheritance.
+Inn,Setting-Scene,Partially or completely set in an Inn or Hotel.
+Dungeon,Setting-Scene,Prominently features a dungeon environment.
+Urban,Setting-Scene,Partly or completely set in a city.
+Work,Setting-Scene,Centers around the activities of a certain occupation.
+Konbini,Setting-Scene,Predominantly features a convenience store.
+Foreign,Setting-Scene,Partly or completely set in a country outside the country of origin.
+Natural Disaster,Setting-Scene,"It focuses on catastrophic events of natural origin, such as earthquakes, tsunamis,  volcanic eruptions, and severe storms. These works often present situations of extreme danger in which the characters struggle to survive and overcome the adversity."
+Restaurant ,Setting-Scene,Features a business that prepares and serves food and drinks to customers. Also encompasses cafes and bistros.
+Snowscape,Setting-Scene,Prominently or partially set in a snowy environment.
+School,Setting-Scene,Partly or completely set in a primary or secondary educational institution.
+Circus,Setting-Scene,Prominently features a circus.
+School Club,Setting-Scene,Partly or completely set in a school club scene.
+Coastal,Setting-Scene,Story prominently takes place near the beach or around a coastal area/town. Setting is near the ocean.
+College,Setting-Scene,Partly or completely set in a college or university.
+Boarding School,Setting-Scene,Features characters attending a boarding school.
+Desert,Setting-Scene,Prominently features a desert environment.
+Rural,Setting-Scene,Partly or completely set in the countryside.
+Outdoor,Setting-Scene,"Centers around hiking, camping or other outdoor activities."
+Prison,Setting-Scene,Partly or completely set in a prison.
+Bar,Setting-Scene,Partly or completely set in a bar.
+Office,Setting-Scene,Features people who work in a business office.
+Historical,Setting-Time,Partly or completely set during a real period of world history.
+Dystopian,Setting-Time,"Partly or completely set in a society characterized by poverty, squalor or oppression."
+Anachronism,Setting-Time,"Prominently features elements that are out of place in the historical period the work takes place in, particularly modern elements in a historical setting."
+Ancient China,Setting-Time,"Setting in ancient china, does not apply to fantasy settings."
+Time Skip,Setting-Time,Features a gap in time used to advance the story.
+Achronological Order,Setting-Time,Chapters or episodes do not occur in chronological order.
+Alternate Universe,Setting-Universe,Features multiple alternate universes in the same series.
+Afterlife,Setting-Universe,Partly or completely set in the afterlife.
+Virtual World,Setting-Universe,Partly or completely set in the world inside a video game.
+Urban Fantasy,Setting-Universe,"Set in a world similar to the real world, but with the existence of magic or other supernatural elements."
+Post-Apocalyptic,Setting-Universe,Partly or completely set in a world or civilization after a global disaster.
+Space,Setting-Universe,Partly or completely set in outer space.
+Augmented Reality,Setting-Universe,Prominently features events with augmented reality as the main setting.
+Rotoscoping,Technical,"Animation technique that animators use to trace over motion picture footage, frame by frame, to produce realistic action."
+Puppetry,Technical,Animation style involving the manipulation of puppets to act out scenes.
+No Dialogue,Technical,This work contains no dialogue.
+POV,Technical,Point of View; features scenes shown from the perspective of the series protagonist.
+Stop Motion,Technical,Animation style characterized by physical objects being moved incrementally between frames to create the illusion of movement.
+Non-fiction,Technical,A work that provides information regarding a real world topic and does not focus on an imaginary narrative.
+Full Color,Technical,Manga fully colored or drawn in color.
+Full CGI,Technical,Almost entirely created with computer-generated imagery.
+4-koma,Technical,"A manga in the 'yonkoma' format, which consists of four equal-sized panels arranged in a vertical strip."
+Episodic,Technical,Features story arcs that are loosely tied or lack an overarching plot.
+Achromatic,Technical,Contains animation that is primarily done in black and white.
+CGI,Technical,Prominently features scenes created with computer-generated imagery.
+Anthology,Technical,A collection of separate works collated into a single release.
+Flash,Technical,Created using Flash animation techniques.
+Advertisement,Technical,Produced in order to promote the products of a certain company.
+Spearplay,Theme-Action,Prominently features the use of spears in combat.
+Battle Royale,Theme-Action,"Centers around a fierce group competition, often violent and with only one winner."
+Archery,Theme-Action,"Centers around the sport of archery, or prominently features the use of archery in combat."
+Guns,Theme-Action,Prominently features the use of guns in combat.
+Espionage,Theme-Action,Prominently features characters infiltrating an organization in order to steal sensitive information.
+Martial Arts,Theme-Action,Centers around the use of traditional hand-to-hand combat.
+Fugitive,Theme-Action,Prominently features a character evading capture by an individual or organization.
+Swordplay,Theme-Action,Prominently features the use of swords in combat.
+Makeup,Theme-Arts,Centers around the makeup industry.
+Calligraphy,Theme-Arts,Centers around the art of calligraphy.
+Rakugo,Theme-Arts,Rakugo is the traditional Japanese performance art of comic storytelling.
+Photography,Theme-Arts,Centers around the use of cameras to capture photos.
+Fashion,Theme-Arts,Centers around the fashion industry.
+Classic Literature,Theme-Arts,Discusses or adapts a work of classic world literature.
+Drawing,Theme-Arts,"Centers around the art of drawing, including manga and doujinshi."
+Food,Theme-Arts,Centers around cooking or food appraisal.
+Acting,Theme-Arts,Centers around actors or the acting industry.
+Writing,Theme-Arts,Centers around the profession of writing books or novels.
+Jazz Music,Theme-Arts-Music,"Centers on the musical style of jazz, not to be applied to anime that use jazz in its soundtrack."
+Hip-hop Music,Theme-Arts-Music,"Centers on the musical style of hip-hop, not to be applied to anime that use hip-hop in its soundtrack."
+Musical Theater,Theme-Arts-Music,"Features a performance that combines songs, spoken dialogue, acting, and dance."
+Metal Music,Theme-Arts-Music,"Centers on the musical style of metal, not to be applied to anime that use metal in its soundtrack."
+Rock Music,Theme-Arts-Music,"Centers on the musical style of rock, not to be applied to anime that use rock in its soundtrack."
+Classical Music,Theme-Arts-Music,"Centers on the musical style of classical, not to be applied to anime that use classical in its soundtrack."
+Dancing,Theme-Arts-Music,Centers around the art of dance.
+Band,Theme-Arts-Music,Main cast is a group of musicians.
+Parody,Theme-Comedy,Features deliberate exaggeration of popular tropes or a particular genre to comedic effect.
+Surreal Comedy,Theme-Comedy,"Prominently features comedic moments that defy casual reasoning, resulting in illogical events."
+Slapstick,Theme-Comedy,Prominently features comedy based on deliberately clumsy actions or embarrassing events.
+Satire,Theme-Comedy,Prominently features the use of comedy or ridicule to expose and criticise social phenomena.
+Class Struggle,Theme-Drama,Contains conflict born between the different social classes. Generally between an dominant elite and a suffering oppressed group.
+Suicide,Theme-Drama,The act or an instance of taking or attempting to take one's own life voluntarily and intentionally.
+Rehabilitation,Theme-Drama,Prominently features the recovery of a character who became incapable of social life or work.
+Revenge,Theme-Drama,Prominently features a character who aims to exact punishment in a resentful or vindictive manner.
+Coming of Age,Theme-Drama,Centers around a character's transition from childhood to adulthood.
+Eco-Horror,Theme-Drama,Utilizes a horrifying depiction of ecology to explore man and its relationship with nature.
+Conspiracy,Theme-Drama,Contains one or more factions controlling or attempting to control the world from the shadows.
+Kingdom Management,Theme-Drama,"Characters in these series take on the responsibility of running a town or kingdom, whether they take control of an existing one, or build their own from the ground up."
+Fake Relationship,Theme-Drama,When two characters enter a fake relationship that mutually benefits one or both involved.
+Tragedy,Theme-Drama,Centers around tragic events and unhappy endings.
+Bullying,Theme-Drama,"Prominently features the use of force for intimidation, often in a school setting."
+Necromancy,Theme-Fantasy,"When the dead are summoned as spirits, skeletons, or the undead, usually for the purpose of gaining information or to be used as a weapon."
+Youkai,Theme-Fantasy,Prominently features supernatural creatures from Japanese folklore.
+Cultivation,Theme-Fantasy,"Features characters using training, often martial arts-related, and other special methods to cultivate life force and gain strength or immortality."
+Wuxia,Theme-Fantasy,Chinese fiction concerning the adventures of martial artists in Ancient China.
+Mythology,Theme-Fantasy,"Prominently features mythological elements, especially those from religious or cultural tradition."
+Super Power,Theme-Fantasy,Prominently features characters with special abilities that allow them to do what would normally be physically or logically impossible.
+Superhero,Theme-Fantasy,Prominently features super-powered humans who aim to serve the greater good.
+Henshin,Theme-Fantasy,Prominently features character or costume transformations which often grant special abilities.
+Magic,Theme-Fantasy,Prominently features magical elements or the use of magic.
+Body Swapping,Theme-Fantasy,Centers around individuals swapping bodies with one another.
+Shapeshifting,Theme-Fantasy,Features character(s) who changes one's appearance or form.
+Fairy Tale,Theme-Fantasy,"This work tells a fairy tale, centers around fairy tales, or is based on a classic fairy tale."
+Kaiju,Theme-Fantasy,Prominently features giant monsters.
+Steampunk,Theme-Fantasy,Prominently features technology and designs inspired by 19th-century industrial steam-powered machinery.
+Isekai,Theme-Fantasy,Features characters being transported into an alternate world setting and having to adapt to their new surroundings.
+Alchemy,Theme-Fantasy,Features character(s) who practice alchemy.
+Video Games,Theme-Game,Centers around characters playing video games.
+Board Game,Theme-Game,Centers around characters playing board games.
+E-Sports,Theme-Game,"Prominently features professional video game competitions, tournaments, players, etc."
+Poker,Theme-Game-Card & Board Game,Centers around the game of poker or its variations.
+Shogi,Theme-Game-Card & Board Game,Centers around the game of shogi.
+Card Battle,Theme-Game-Card & Board Game,Centers around individuals competing in card games.
+Karuta,Theme-Game-Card & Board Game,Centers around the game of karuta.
+Mahjong,Theme-Game-Card & Board Game,Centered around the game of mahjong.
+Go,Theme-Game-Card & Board Game,Centered around the game of Go.
+Tennis,Theme-Game-Sport,Centers around the sport of tennis.
+Fishing,Theme-Game-Sport,Centers around the sport of fishing.
+Athletics,Theme-Game-Sport,"Centers around sporting events that involve competitive running, jumping, throwing, or walking."
+Scuba Diving,Theme-Game-Sport,Prominently features characters diving with the aid of special breathing equipment.
+Badminton,Theme-Game-Sport,Centers around the sport of badminton.
+Table Tennis,Theme-Game-Sport,"Centers around the sport of table tennis (also known as ""ping pong"")."
+Cheerleading,Theme-Game-Sport,Centers around the activity of cheerleading.
+Swimming,Theme-Game-Sport,Centers around the sport of swimming.
+Basketball,Theme-Game-Sport,Centers around the sport of basketball.
+Judo,Theme-Game-Sport,Centers around the sport of judo.
+Surfing,Theme-Game-Sport,Centers around surfing as a sport.
+Ice Skating,Theme-Game-Sport,Centers around the sport of ice skating.
+Sumo,Theme-Game-Sport,Centers around the sport of sumo.
+Fencing,Theme-Game-Sport,Centers around the sport of fencing.
+Rugby,Theme-Game-Sport,Centers around the sport of rugby.
+Handball,Theme-Game-Sport,Centers around the sport of handball.
+Fitness,Theme-Game-Sport,Centers around exercise with the aim of improving physical health.
+Bowling,Theme-Game-Sport,Centers around the sport of Bowling.
+Boxing,Theme-Game-Sport,Centers around the sport of boxing.
+Cycling,Theme-Game-Sport,Centers around the sport of cycling.
+Football,Theme-Game-Sport,"Centers around the sport of football (known in the USA as ""soccer"")."
+Wrestling,Theme-Game-Sport,Centers around the sport of wrestling.
+Acrobatics,Theme-Game-Sport,"The art of jumping, tumbling, and balancing. Often paired with trapeze, trampolining, tightropes, or general gymnastics."
+Lacrosse,Theme-Game-Sport,A team game played with a ball and lacrosse sticks.
+American Football,Theme-Game-Sport,Centers around the sport of American football.
+Golf,Theme-Game-Sport,Centers around the sport of golf.
+Airsoft,Theme-Game-Sport,Centers around the sport of airsoft.
+Parkour,Theme-Game-Sport,Centers around the sport of parkour.
+Skateboarding,Theme-Game-Sport,Centers around or prominently features skateboarding as a sport.
+Volleyball,Theme-Game-Sport,Centers around the sport of volleyball.
+Baseball,Theme-Game-Sport,Centers around the sport of baseball.
+Software Development,Theme-Other,"Centers around characters developing or programming a piece of technology, software, gaming, etc."
+Body Horror,Theme-Other,"Features characters who undergo horrific transformations or disfigurement, often to their own detriment."
+Slavery,Theme-Other,"Prominently features slaves, slavery, or slave trade."
+Denpa,Theme-Other,"Works that feature themes of social dissociation, delusions, and other issues like suicide, bullying, self-isolation, paranoia, and technological necessity in daily lives. Classic iconography: telephone poles, rooftops, and trains."
+Biographical,Theme-Other,"Based on true stories of real persons living or dead, written by another."
+Noir,Theme-Other,Stylized as a cynical crime drama with low-key visuals.
+Survival,Theme-Other,Centers around the struggle to live in spite of extreme obstacles.
+Terrorism,Theme-Other,Centers around the activities of a terrorist or terrorist organization.
+Autobiographical,Theme-Other,Real stories and anecdotes written by the author about their own life.
+Torture,Theme-Other,The act of deliberately inflicting severe pain or suffering upon another individual or oneself as a punishment or with a specific purpose.
+Astronomy,Theme-Other,"Relating or centered around the study of celestial objects and phenomena, space, or the universe."
+Travel,Theme-Other,Centers around character(s) moving between places a significant distance apart.
+Animals,Theme-Other,Prominently features animal characters in a leading role.
+Gore,Theme-Other,Prominently features graphic bloodshed and violence.
+War,Theme-Other,Partly or completely set during wartime.
+Adoption,Theme-Other,Features a character who has been adopted by someone who is neither of their biological parents.
+Gender Bending,Theme-Other,"Prominently features a character who dresses and behaves in a way characteristic of another gender, or has been transformed into a person of another gender."
+Gambling,Theme-Other,Centers around the act of gambling.
+Filmmaking,Theme-Other,Centers around the art of filmmaking.
+Language Barrier,Theme-Other,A barrier to communication between people who are unable to speak a common language.
+Found Family,Theme-Other,Features a group of characters with no biological relations that are united in a group providing social support.
+Pandemic,Theme-Other,Prominently features a disease prevalent over a whole country or the world.
+Mountaineering,Theme-Other,Prominently features characters discussing or hiking mountains.
+LGBTQ+ Themes,Theme-Other,"Prominently features characters or themes associated with the LGBTQ+ community, such as sexuality or gender identity."
+Meta,Theme-Other,Features fourth wall-breaking references to itself or genre tropes.
+Educational,Theme-Other,Primary aim is to educate the audience.
+Politics,Theme-Other,"Centers around politics, politicians, or government activities."
+Memory Manipulation,Theme-Other,Prominently features a character(s) who has had their memories altered.
+Chibi,Theme-Other,"Features ""super deformed"" character designs with smaller, rounder proportions and a cute look."
+Medicine,Theme-Other,Centered around the activities of people working in the field of medicine.
+Proxy Battle,Theme-Other,"A proxy battle is a battle where humans use creatures/robots to do the fighting for them, either by commanding those creatures/robots or by simply evolving them/changing them into battle mode."
+Psychosexual,Theme-Other,Work that involves the psychological aspects of sexual impulses.
+Drugs,Theme-Other,"Prominently features the usage of drugs such as opioids, stimulants, hallucinogens etc."
+Crime,Theme-Other,Centers around unlawful activities punishable by the state or other authority.
+Economics,Theme-Other,Centers around the field of economics.
+Reincarnation,Theme-Other,"Features a character being born again after death, typically as another person or in another world."
+Environmental,Theme-Other,Concern with the state of the natural world and how humans interact with it.
+Ero Guro,Theme-Other,"Japanese literary and artistic movement originating in the 1930's. Works have a focus on grotesque eroticism, sexual corruption, and decadence."
+Lost Civilization,Theme-Other,Featuring a civilization with few ruins or records that exist in present day knowledge.
+Crossover,Theme-Other,"Centers around the placement of two or more otherwise discrete fictional characters, settings, or universes into the context of a single story."
+Otaku Culture,Theme-Other,Centers around the culture of a fanatical fan-base.
+Royal Affairs,Theme-Other,"Features nobility, alliances, arranged marriage, succession disputes, religious orders and other elements of royal politics."
+Cannibalism,Theme-Other,Prominently features the act of consuming another member of the same species as food.
+Philosophy,Theme-Other,"Relating or devoted to the study of the fundamental nature of knowledge, reality, and existence."
+Cosmic Horror,Theme-Other,A type of horror that emphasizes human insignificance in the grand scope of cosmic reality; fearing the unknown and being powerless to fight it.
+Marriage,Theme-Other,Centers around marriage between two or more characters.
+Death Game,Theme-Other,"Features characters participating in a game, where failure results in death."
+Religion,Theme-Other,"Centers on the belief that humanity is related to supernatural, transcendental, and spiritual elements."
+Triads,Theme-Other-Organisations,Centered around Chinese organised crime syndicates.
+Assassins,Theme-Other-Organisations,Centers around characters who murder people as a profession.
+Firefighters,Theme-Other-Organisations,Centered around the life and activities of rescuers specialised in firefighting.
+Gangs,Theme-Other-Organisations,Centers around gang organizations.
+Police,Theme-Other-Organisations,Centers around the life and activities of law enforcement officers.
+Mafia,Theme-Other-Organisations,Centered around Italian organised crime syndicates.
+Yakuza,Theme-Other-Organisations,Centered around Japanese organised crime syndicates.
+Military,Theme-Other-Organisations,Centered around the life and activities of military personnel.
+Cult,Theme-Other-Organisations,"Features a social group with unorthodox religious, spiritual, or philosophical beliefs and practices."
+Criminal Organization,Theme-Other-Organisations,Prominently features a group of people who commit crimes for illicit or violent purposes.
+Trains,Theme-Other-Vehicle,Prominently features trains.
+Motorcycles,Theme-Other-Vehicle,Prominently features the use of motorcycles.
+Mopeds,Theme-Other-Vehicle,Prominently features mopeds.
+Ships,Theme-Other-Vehicle,Prominently features the use of sea-based transportation vessels.
+Aviation,Theme-Other-Vehicle,Regarding the flying or operation of aircraft.
+Cars,Theme-Other-Vehicle,Centers around the use of automotive vehicles.
+Tanks,Theme-Other-Vehicle,Prominently features the use of tanks or other armoured vehicles.
+Teens' Love,Theme-Romance,"Sexually explicit love-story between individuals of the opposite sex, specifically targeting females of teens and young adult age."
+Age Gap,Theme-Romance,Prominently features romantic relations between people with a significant age difference.
+Heterosexual,Theme-Romance,"Prominently features a romance between a man and a woman, not inherently sexual."
+Unrequited Love,Theme-Romance,One or more characters are experiencing an unrequited love that may or may not be reciprocated.
+Matchmaking,Theme-Romance,Prominently features either a matchmaker or events with the intent of matchmaking with eventual marriage in sight.
+Female Harem,Theme-Romance,Main cast features the protagonist plus several female characters who are romantically interested in them.
+Male Harem,Theme-Romance,Main cast features the protagonist plus several male characters who are romantically interested in them.
+Yuri,Theme-Romance,"Prominently features romance between two females, not inherently sexual. Also known as Girls' Love."
+Bisexual,Theme-Romance,Features a character who is romantically or sexually attracted to people of more than one sex or gender.
+Boys' Love,Theme-Romance,"Prominently features romance between two males, not inherently sexual."
+Love Triangle,Theme-Romance,Centered around romantic feelings between more than two people. Includes all love polygons.
+Mixed Gender Harem,Theme-Romance,"Main cast features the protagonist plus several people, regardless of gender, who are romantically interested in them."
+Cyberpunk,Theme-Sci-Fi,Set in a future of advanced technological and scientific achievements that have resulted in social disorder.
+Time Loop,Theme-Sci-Fi,A character is stuck in a repetitive cycle that they are attempting to break out of. This is distinct from a manipulating time of their own choice.
+Tokusatsu,Theme-Sci-Fi,Prominently features elements that resemble special effects in Japanese live-action shows
+Time Manipulation,Theme-Sci-Fi,Prominently features time-traveling or other time-warping phenomena.
+Space Opera,Theme-Sci-Fi,"Centers around space warfare, advanced technology, chivalric romance and adventure."
+Super Robot,Theme-Sci-Fi-Mecha,Prominently features large robots often piloted by hot-blooded protagonists.
+Real Robot,Theme-Sci-Fi-Mecha,Prominently features mechanical designs loosely influenced by real-world robotics.
+Parenthood,Theme-Slice of Life,Centers around the experience of raising a child.
+Cute Boys Doing Cute Things,Theme-Slice of Life,"Centers around male characters doing cute activities, usually with little to no emphasis on drama and conflict."
+Cute Girls Doing Cute Things,Theme-Slice of Life,"Centers around female characters doing cute activities, usually with little to no emphasis on drama and conflict.
+"
+Horticulture,Theme-Slice of Life,The story prominently features plant care and gardening.
+Iyashikei,Theme-Slice of Life,Primary aim is to heal the audience through serene depictions of characters' daily lives.
+Agriculture,Theme-Slice of Life,Prominently features agriculture practices.
+Family Life,Theme-Slice of Life,Centers around the activities of a family unit.
