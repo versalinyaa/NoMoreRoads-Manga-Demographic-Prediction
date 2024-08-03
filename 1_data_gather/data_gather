@@ -140,9 +140,37 @@ query ($page_1: Int, $page_2: Int) {{
 # Defining URL for request
 URL = "https://graphql.anilist.co"
 
-@click.command(help=__doc__)
-def main():
+def opt_manga_count_callback(
+        ctx: click.Context,
+        param: click.Parameter,
+        value: int):
+    if value < 0:
+        raise click.BadParameter(f"must be >= 0")
+    return value
+
+@click.command(
+    help = __doc__,
+    context_settings = {
+        # Show default values for option parameters in help text
+        "show_default": True,
+    },
+)
+@click.option("--manga-count",
+    default = 0,
+    type = click.INT,
+    callback = opt_manga_count_callback,
+    metavar = "N",
+    help = f"""
+        Download N manga records that satisfy the tool's query criteria. The
+        actual download count may be larger due to the batch size
+        ({QUERY_BATCH_SIZE}) of the REST queries. If N=0, there is no download
+        limit. (Not all downloaded manga records will be included in the output
+        data. Some are filtered out due to manga content.)""",
+)
+def main(manga_count):
     logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
+
+    assert manga_count >= 0
 
     # Defining empty list to store the entire set of the
     # multiple requests we will make
@@ -193,6 +221,8 @@ def main():
 
         # 5. Appending relevant information to
         manga_list += rs_data["FirstPage"]["media"] + rs_data["SecondPage"]["media"]
+        if manga_count != 0 and len(manga_list) >= manga_count:
+            break
 
         # 6. Waiting to avoid triggering timeout, if possible
         time.sleep(random.uniform(0.5, 1.5))
