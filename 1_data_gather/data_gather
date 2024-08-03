@@ -17,6 +17,7 @@ import sys
 import random
 import textwrap
 from pathlib import Path
+from itertools import chain
 
 import click
 import requests
@@ -238,6 +239,11 @@ def main(manga_count):
 
     # A series of loops to un-nest the json file in the format described above
     for manga in manga_list:
+
+        def count_character_edges(character_type):
+            return (len(manga[f"{character_type}Characters"]["edges"]) +
+                    len(manga[f"{character_type}Characters2"]["edges"]))
+
         entry = defaultdict(int, {
             "id": manga["id"],
             "eng_title": manga["title"]["english"],
@@ -256,12 +262,9 @@ def main(manga_count):
             "favorites": manga["favourites"],
             "source": manga["source"],
             "country": manga["countryOfOrigin"],
-            "total_main_roles": len(manga["MainCharacters"]["edges"])
-                + len(manga["MainCharacters2"]["edges"]),
-            "total_supporting_roles": len(manga["SuppCharacters"]["edges"])
-                + len(manga["SuppCharacters2"]["edges"]),
-            "total_background_roles": len(manga["BackCharacters"]["edges"])
-                + len(manga["BackCharacters2"]["edges"])
+            "total_main_roles": count_character_edges("Main"),
+            "total_supporting_roles": count_character_edges("Supp"),
+            "total_background_roles": count_character_edges("Back"),
         } )
 
         for score_bucket in manga["stats"]["scoreDistribution"]:
@@ -284,35 +287,17 @@ def main(manga_count):
             entry["relation_" + relation["relationType"]] += 1
             entry["relationmedia_" + relation["node"]["type"]] += 1
 
-        for character in manga["MainCharacters"]["edges"]:
-            if character["node"]["gender"] is None:
-                continue
-            entry[character["node"]["gender"] + "_main_roles"] += 1
+        def count_gender_roles(character_type, role_type):
+            for character in chain(manga[f"{character_type}Characters"]["edges"],
+                                   manga[f"{character_type}Characters2"]["edges"]):
+                gender = character["node"].get("gender")
+                if gender is None:
+                    continue
+                entry[f"{gender}_{role_type}_roles"] += 1
 
-        for character in manga["SuppCharacters"]["edges"]:
-            if character["node"]["gender"] is None:
-                continue
-            entry[character["node"]["gender"] + "_supporting_roles"] += 1
-
-        for character in manga["BackCharacters"]["edges"]:
-            if character["node"]["gender"] is None:
-                continue
-            entry[character["node"]["gender"] + "_background_roles"] += 1
-
-        for character in manga["MainCharacters2"]["edges"]:
-            if character["node"]["gender"] is None:
-                continue
-            entry[character["node"]["gender"] + "_main_roles"] += 1
-
-        for character in manga["SuppCharacters2"]["edges"]:
-            if character["node"]["gender"] is None:
-                continue
-            entry[character["node"]["gender"] + "_supporting_roles"] += 1
-
-        for character in manga["BackCharacters2"]["edges"]:
-            if character["node"]["gender"] is None:
-                continue
-            entry[character["node"]["gender"] + "_background_roles"] += 1
+        count_gender_roles("Main", "main")
+        count_gender_roles("Supp", "supporting")
+        count_gender_roles("Back", "background")
 
         staging_list.append(entry)
 
