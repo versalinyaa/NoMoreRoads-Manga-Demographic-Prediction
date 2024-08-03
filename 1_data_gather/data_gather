@@ -23,7 +23,6 @@ import pandas as pd
 
 LOG_LEVEL = logging.DEBUG
 log = logging.getLogger(__name__)
-logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
 PROJECT_TOP = Path(__file__).parent.parent
 
@@ -137,149 +136,155 @@ query ($page_1: Int, $page_2: Int) {{
 # Defining URL for request
 URL = "https://graphql.anilist.co"
 
-# Defining empty list to store the entire set of the
-# multiple requests we will make
-manga_list = []
+def main():
+    logging.basicConfig(stream=sys.stderr, encoding="utf-8", level=LOG_LEVEL)
 
-# Defining the page number to start on
-page_num_1 = 1
-page_num_2 = 2
+    # Defining empty list to store the entire set of the
+    # multiple requests we will make
+    manga_list = []
 
-# Looping through the number of pages needed to grab all of the manga
-# records neccesary
-while True:
-    # 1. Making and saving request
-    response = requests.post(URL, json={"query": QUERY,
-                                        "variables": {"page_1": page_num_1, "page_2": page_num_2 }},
-                                        timeout=25)
-    log.debug(response.headers)
-    rs_status = response.status_code
-    try:
-        rs_data = json.loads(response.text)["data"]
-    except KeyError:
-        log.debug(json.loads(response.text))
-        log.debug("data missing from dict")
+    # Defining the page number to start on
+    page_num_1 = 1
+    page_num_2 = 2
 
-    # 2. Checking if response has hit rate limit; if so wait & try again
-    if rs_status == 429:
-        log.debug("too many requests! waiting for a bit...")
-        rs_retry_time = response.headers["Retry-After"]
-        log.debug("should wait for %s seconds", rs_retry_time)
-        time.sleep(int(rs_retry_time) + 1)
-        continue
+    # Looping through the number of pages needed to grab all of the manga
+    # records neccesary
+    while True:
+        # 1. Making and saving request
+        response = requests.post(URL, json={"query": QUERY,
+                                            "variables": {"page_1": page_num_1, "page_2": page_num_2 }},
+                                            timeout=25)
+        log.debug(response.headers)
+        rs_status = response.status_code
+        try:
+            rs_data = json.loads(response.text)["data"]
+        except KeyError:
+            log.debug(json.loads(response.text))
+            log.debug("data missing from dict")
 
-    # 3. Checking if response is an unexpected code; if so stopping script altogether
-    if rs_status not in [200, 429]:
-        sys.exit("got a weird response! Try running this script again.")
-
-    log.debug("response_list.len: %s", len(manga_list))
-    log.debug(rs_status)
-    log.debug(response.headers)
-    log.debug(rs_data is None)
-
-    # 4. Checking if response got valid but blank response; ending loop if so
-    if rs_status == 200 \
-    and len(rs_data["FirstPage"]["media"]) + len(rs_data["SecondPage"]["media"]) == 0:
-        log.debug(rs_data)
-        log.debug("exiting response loop")
-        break
-
-    # 5. Appending relevant information to
-    manga_list += rs_data["FirstPage"]["media"] + rs_data["SecondPage"]["media"]
-
-    # 6. Waiting to avoid triggering timeout, if possible
-    time.sleep(random.uniform(0.5, 1.5))
-
-    # 7. Incremeting page number to query
-    page_num_1 += 2
-    page_num_2 += 2
-
-# Creating empty list to be filled with dictionaries, each one representing a
-# manga, to be later converted to a pandas dataframe
-log.debug("initializing json parsing")
-staging_list = []
-
-# A series of loops to un-nest the json file in the format described above
-for manga in manga_list:
-    entry = defaultdict(int, {
-        "id": manga["id"],
-        "eng_title": manga["title"]["english"],
-        "rom_title": manga["title"]["romaji"],
-        "popularity": manga["popularity"],
-        "mean_score": manga["meanScore"],
-        "status": manga["status"],
-        "chapters": manga["chapters"],
-        "volumes": manga["volumes"],
-        "start_year": manga["startDate"]["year"],
-        "start_month": manga["startDate"]["month"],
-        "start_day": manga["startDate"]["day"],
-        "end_year": manga["endDate"]["year"],
-        "end_month": manga["endDate"]["month"],
-        "end_day": manga["endDate"]["day"],
-        "favorites": manga["favourites"],
-        "source": manga["source"],
-        "country": manga["countryOfOrigin"],
-        "total_main_roles": len(manga["MainCharacters"]["edges"])
-            + len(manga["MainCharacters2"]["edges"]),
-        "total_supporting_roles": len(manga["SuppCharacters"]["edges"])
-            + len(manga["SuppCharacters2"]["edges"]),
-        "total_background_roles": len(manga["BackCharacters"]["edges"])
-            + len(manga["BackCharacters2"]["edges"])
-    } )
-
-    for score_bucket in manga["stats"]["scoreDistribution"]:
-        entry[f"scored_{score_bucket['score']}_count"] \
-            = score_bucket["amount"]
-
-    for status in manga["stats"]["statusDistribution"]:
-        entry[f"status_{status['status']}_count"] \
-            = status["amount"]
-
-    for genre in manga["genres"]:
-        entry[genre] = 1
-
-    for tag in manga["tags"]:
-        if tag["isAdult"] is True:
+        # 2. Checking if response has hit rate limit; if so wait & try again
+        if rs_status == 429:
+            log.debug("too many requests! waiting for a bit...")
+            rs_retry_time = response.headers["Retry-After"]
+            log.debug("should wait for %s seconds", rs_retry_time)
+            time.sleep(int(rs_retry_time) + 1)
             continue
-        entry[tag["name"]] = tag["rank"]
 
-    for relation in manga["relations"]["edges"]:
-        entry["relation_" + relation["relationType"]] += 1
-        entry["relationmedia_" + relation["node"]["type"]] += 1
+        # 3. Checking if response is an unexpected code; if so stopping script altogether
+        if rs_status not in [200, 429]:
+            sys.exit("got a weird response! Try running this script again.")
 
-    for character in manga["MainCharacters"]["edges"]:
-        if character["node"]["gender"] is None:
-            continue
-        entry[character["node"]["gender"] + "_main_roles"] += 1
+        log.debug("response_list.len: %s", len(manga_list))
+        log.debug(rs_status)
+        log.debug(response.headers)
+        log.debug(rs_data is None)
 
-    for character in manga["SuppCharacters"]["edges"]:
-        if character["node"]["gender"] is None:
-            continue
-        entry[character["node"]["gender"] + "_supporting_roles"] += 1
+        # 4. Checking if response got valid but blank response; ending loop if so
+        if rs_status == 200 \
+        and len(rs_data["FirstPage"]["media"]) + len(rs_data["SecondPage"]["media"]) == 0:
+            log.debug(rs_data)
+            log.debug("exiting response loop")
+            break
 
-    for character in manga["BackCharacters"]["edges"]:
-        if character["node"]["gender"] is None:
-            continue
-        entry[character["node"]["gender"] + "_background_roles"] += 1
+        # 5. Appending relevant information to
+        manga_list += rs_data["FirstPage"]["media"] + rs_data["SecondPage"]["media"]
 
-    for character in manga["MainCharacters2"]["edges"]:
-        if character["node"]["gender"] is None:
-            continue
-        entry[character["node"]["gender"] + "_main_roles"] += 1
+        # 6. Waiting to avoid triggering timeout, if possible
+        time.sleep(random.uniform(0.5, 1.5))
 
-    for character in manga["SuppCharacters2"]["edges"]:
-        if character["node"]["gender"] is None:
-            continue
-        entry[character["node"]["gender"] + "_supporting_roles"] += 1
+        # 7. Incremeting page number to query
+        page_num_1 += 2
+        page_num_2 += 2
 
-    for character in manga["BackCharacters2"]["edges"]:
-        if character["node"]["gender"] is None:
-            continue
-        entry[character["node"]["gender"] + "_background_roles"] += 1
+    # Creating empty list to be filled with dictionaries, each one representing a
+    # manga, to be later converted to a pandas dataframe
+    log.debug("initializing json parsing")
+    staging_list = []
 
-    staging_list.append(entry)
+    # A series of loops to un-nest the json file in the format described above
+    for manga in manga_list:
+        entry = defaultdict(int, {
+            "id": manga["id"],
+            "eng_title": manga["title"]["english"],
+            "rom_title": manga["title"]["romaji"],
+            "popularity": manga["popularity"],
+            "mean_score": manga["meanScore"],
+            "status": manga["status"],
+            "chapters": manga["chapters"],
+            "volumes": manga["volumes"],
+            "start_year": manga["startDate"]["year"],
+            "start_month": manga["startDate"]["month"],
+            "start_day": manga["startDate"]["day"],
+            "end_year": manga["endDate"]["year"],
+            "end_month": manga["endDate"]["month"],
+            "end_day": manga["endDate"]["day"],
+            "favorites": manga["favourites"],
+            "source": manga["source"],
+            "country": manga["countryOfOrigin"],
+            "total_main_roles": len(manga["MainCharacters"]["edges"])
+                + len(manga["MainCharacters2"]["edges"]),
+            "total_supporting_roles": len(manga["SuppCharacters"]["edges"])
+                + len(manga["SuppCharacters2"]["edges"]),
+            "total_background_roles": len(manga["BackCharacters"]["edges"])
+                + len(manga["BackCharacters2"]["edges"])
+        } )
 
-# Converting list of dictionaries into pandas dataframe
-df_whole = pd.DataFrame(staging_list)
-df_whole.to_csv(PROJECT_TOP / "data/manga.csv", index=False)
-log.debug(df_whole.shape[0])
+        for score_bucket in manga["stats"]["scoreDistribution"]:
+            entry[f"scored_{score_bucket['score']}_count"] \
+                = score_bucket["amount"]
+
+        for status in manga["stats"]["statusDistribution"]:
+            entry[f"status_{status['status']}_count"] \
+                = status["amount"]
+
+        for genre in manga["genres"]:
+            entry[genre] = 1
+
+        for tag in manga["tags"]:
+            if tag["isAdult"] is True:
+                continue
+            entry[tag["name"]] = tag["rank"]
+
+        for relation in manga["relations"]["edges"]:
+            entry["relation_" + relation["relationType"]] += 1
+            entry["relationmedia_" + relation["node"]["type"]] += 1
+
+        for character in manga["MainCharacters"]["edges"]:
+            if character["node"]["gender"] is None:
+                continue
+            entry[character["node"]["gender"] + "_main_roles"] += 1
+
+        for character in manga["SuppCharacters"]["edges"]:
+            if character["node"]["gender"] is None:
+                continue
+            entry[character["node"]["gender"] + "_supporting_roles"] += 1
+
+        for character in manga["BackCharacters"]["edges"]:
+            if character["node"]["gender"] is None:
+                continue
+            entry[character["node"]["gender"] + "_background_roles"] += 1
+
+        for character in manga["MainCharacters2"]["edges"]:
+            if character["node"]["gender"] is None:
+                continue
+            entry[character["node"]["gender"] + "_main_roles"] += 1
+
+        for character in manga["SuppCharacters2"]["edges"]:
+            if character["node"]["gender"] is None:
+                continue
+            entry[character["node"]["gender"] + "_supporting_roles"] += 1
+
+        for character in manga["BackCharacters2"]["edges"]:
+            if character["node"]["gender"] is None:
+                continue
+            entry[character["node"]["gender"] + "_background_roles"] += 1
+
+        staging_list.append(entry)
+
+    # Converting list of dictionaries into pandas dataframe
+    df_whole = pd.DataFrame(staging_list)
+    df_whole.to_csv(PROJECT_TOP / "data/manga.csv", index=False)
+    log.debug(df_whole.shape[0])
+
+if __name__ == "__main__":
+    main()
