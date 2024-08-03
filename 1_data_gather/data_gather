@@ -27,6 +27,7 @@ LOG_LEVEL = logging.DEBUG
 log = logging.getLogger(__name__)
 
 PROJECT_TOP = Path(__file__).parent.parent
+OUT_FILE = PROJECT_TOP / "data/manga.csv"
 
 # Here we define our query as a nested multi-line string
 PAGE_QUERY = """
@@ -303,7 +304,7 @@ def main(manga_count):
 
     # Converting list of dictionaries into pandas dataframe
     df_whole = pd.DataFrame(staging_list)
-    df_whole.to_csv(PROJECT_TOP / "data/manga.csv", index=False)
+    df_whole.to_csv(OUT_FILE, index=False)
     log.debug(df_whole.shape[0])
 
 if __name__ == "__main__":
