@@ -1,0 +1,27 @@
+# To use this config on you editor, follow the instructions at:
+# http://editorconfig.org
+
+root = true
+
+# All Files
+[*]
+charset = utf-8
+indent_style = space
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Text Docs
+[*.{txt,md,markdown}]
+indent_size = 4
+
+# Python
+[{*.py,data_gather,tags_gather}]
+indent_size = 4
+
+# Jupyter Notebook JSON
+[*.ipynb]
+indent_size = 1
+
+[*.json]
+indent_size = 2
