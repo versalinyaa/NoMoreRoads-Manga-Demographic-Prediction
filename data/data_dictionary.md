@@ -104,8 +104,8 @@ Sports, Supernatural, and Thriller.
 **\[tag\]**\
 A series of features indicating the score (0 to 100, inclusive) users have given to a given tag \[tag\]. The score is
 meant to represent how central a theme the tag is to the work, where zero indicates that no user has submitted the tag
-to the work, and 100 indicates that it is a central theme. **The site-generated descriptions of each tag are enumerated
-in the appendix to this data dictionary, which can be accessed [here](../data/tag_reference.csv).**
+to the work, and 100 indicates that it is a central theme. *The site-generated descriptions of each tag are enumerated
+in the appendix to this data dictionary, which can be accessed [here](../data/tag_reference.csv).*
 
 **relation_\[relationtype\]**\
 A feature indicating the number of related media that are related in a given way \[relationtype\]. Examples may include
