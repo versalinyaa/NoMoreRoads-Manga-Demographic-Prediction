@@ -123,16 +123,19 @@ media (type: MANGA, popularity_greater: 200, isAdult: false) {
 }
 """
 
+QUERY_BATCH_SIZE = 100
+
 QUERY = """
 query ($page_1: Int, $page_2: Int) {{
-    FirstPage: Page (page: $page_1, perPage: 50) {{
+    FirstPage: Page (page: $page_1, perPage: {page_size}) {{
         {page_query}
     }}
-    SecondPage: Page (page: $page_2, perPage: 50) {{
+    SecondPage: Page (page: $page_2, perPage: {page_size}) {{
         {page_query}
     }}
 }}
-""".format(page_query=textwrap.indent(PAGE_QUERY, "    "))
+""".format(page_size = int(QUERY_BATCH_SIZE / 2),
+           page_query = textwrap.indent(PAGE_QUERY, "    "))
 
 # Defining URL for request
 URL = "https://graphql.anilist.co"
