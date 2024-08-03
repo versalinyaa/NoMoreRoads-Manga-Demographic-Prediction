@@ -12,6 +12,7 @@ exports the result as a csv which serves as an appendix to the data dictionary.
 import logging
 import sys
 import json
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -32,6 +33,8 @@ query {
 }
 """
 
+PROJECT_TOP = Path(__file__).parent.parent
+
 # Defining URL for request
 URL = "https://graphql.anilist.co"
 
@@ -42,4 +45,4 @@ FULL_DF = pd.DataFrame(RESPONSE_CONTENT)\
     .sort_values("category", ascending=True)
 log.debug(FULL_DF)
 
-FULL_DF.to_csv("../data/tag_reference.csv", index=False)
+FULL_DF.to_csv(PROJECT_TOP / "data/tag_reference.csv", index=False)
